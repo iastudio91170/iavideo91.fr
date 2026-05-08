@@ -30,8 +30,12 @@
             -webkit-backdrop-filter: blur(12px);
         }
 
-        .video-card:hover .video-overlay {
-            opacity: 1;
+        .page-content {
+            display: none;
+        }
+
+        .page-active {
+            display: block;
         }
 
         .gradient-text {
@@ -45,22 +49,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .reveal {
+        .reveal-anim {
             animation: fadeIn 0.8s ease-out forwards;
         }
 
-        video::-internal-media-controls-download-button { display:none; }
-        video::-webkit-media-controls-enclosure { overflow:hidden; }
-        video::-webkit-media-controls-panel { width: calc(100% + 30px); }
-
-        .event-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .event-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-        }
-        
         .video-card-inner {
             position: relative;
             width: 100%;
@@ -79,10 +71,6 @@
             transition: background 0.3s;
         }
 
-        .video-card-inner:hover .play-overlay {
-            background: rgba(0,0,0,0.4);
-        }
-
         .play-icon {
             width: 50px;
             height: 50px;
@@ -94,73 +82,103 @@
             color: white;
             font-size: 20px;
             box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-            transition: transform 0.3s;
         }
 
-        .video-card-inner:hover .play-icon {
-            transform: scale(1.1);
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        #mobile-menu.active {
+            transform: translateX(0);
         }
     </style>
 </head>
-<body class="bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+<body class="bg-white text-slate-900">
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav border-b border-slate-100 py-4 transition-all">
+    <nav class="fixed w-full z-50 glass-nav border-b border-slate-100 py-4">
         <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-2 font-black text-2xl tracking-tighter group">
-                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-lg shadow-lg shadow-blue-200 group-hover:rotate-6 transition-transform">
+            <a href="#" onclick="showPage('home')" class="flex items-center gap-2 font-black text-2xl tracking-tighter group">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-lg shadow-lg shadow-blue-200">
                     <i class="fas fa-film"></i>
                 </div>
-                <span class="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-blue-600">IAViDEO-91</span>
+                <span>IAViDEO-91</span>
             </a>
             
             <div class="hidden md:flex items-center gap-8 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500">
-                <a href="#portfolio" class="hover:text-blue-600 transition">Portfolio</a>
-                <a href="#evenements" class="hover:text-blue-600 transition">Événements</a>
-                <a href="#tarifs" class="hover:text-blue-600 transition">Tarifs</a>
-                <a href="tel:0749518336" class="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-200 transition-all flex items-center gap-2">
-                    <i class="fas fa-phone-alt text-[10px]"></i> 07.49.51.83.36
+                <a href="#" onclick="showPage('portfolio')" class="hover:text-blue-600 transition">Portfolio</a>
+                <a href="#" onclick="showPage('evenements')" class="hover:text-blue-600 transition">Événements</a>
+                <a href="#" onclick="showPage('tarifs')" class="hover:text-blue-600 transition">Tarifs</a>
+                <a href="#" onclick="showPage('contact')" class="hover:text-blue-600 transition">Contact</a>
+                <a href="tel:0749518336" class="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-blue-600 transition-all flex items-center gap-2">
+                    07.49.51.83.36
                 </a>
             </div>
 
-            <button class="md:hidden text-slate-900 text-2xl">
+            <button onclick="toggleMenu()" class="md:hidden text-slate-900 text-2xl">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero-bg pt-48 pb-24 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="reveal opacity-0" style="animation-delay: 0.1s">
-                <span class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-8 border border-blue-100">
-                    <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
-                    Cinéma Génératif 4K
-                </span>
-            </div>
-            
-            <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9] reveal opacity-0" style="animation-delay: 0.2s">
-                VOTRE VISION <br>
-                <span class="italic gradient-text">DEVIENT RÉALITÉ.</span>
-            </h1>
-            
-            <p class="text-slate-500 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed reveal opacity-0" style="animation-delay: 0.3s">
-                IAViDEO-91 transforme vos concepts en bandes-annonces cinématographiques professionnelles. Une immersion totale, propulsée par l'intelligence artificielle.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row justify-center gap-4 reveal opacity-0" style="animation-delay: 0.4s">
-                <a href="#tarifs" class="px-10 py-5 bg-blue-600 text-white font-black rounded-2xl shadow-2xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
-                    Découvrir les offres <i class="fas fa-arrow-right text-sm"></i>
-                </a>
-                <a href="tel:0749518336" class="px-10 py-5 bg-white border border-slate-200 text-slate-900 font-black rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
-                    <i class="fas fa-phone-alt"></i> Appeler André-Marc
-                </a>
-            </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white flex flex-col p-8 md:hidden">
+        <div class="flex justify-end mb-12">
+            <button onclick="toggleMenu()" class="text-3xl"><i class="fas fa-times"></i></button>
         </div>
-    </section>
+        <div class="flex flex-col gap-8 text-2xl font-black uppercase tracking-tighter">
+            <a href="#" onclick="showPage('home'); toggleMenu()">Accueil</a>
+            <a href="#" onclick="showPage('portfolio'); toggleMenu()">Portfolio</a>
+            <a href="#" onclick="showPage('evenements'); toggleMenu()">Événements</a>
+            <a href="#" onclick="showPage('tarifs'); toggleMenu()">Tarifs</a>
+            <a href="#" onclick="showPage('contact'); toggleMenu()">Contact</a>
+        </div>
+    </div>
 
-    <!-- Portfolio -->
-    <section id="portfolio" class="py-24 px-6 bg-white">
+    <!-- PAGE ACCUEIL -->
+    <main id="home-page" class="page-content page-active">
+        <section class="hero-bg pt-48 pb-24 px-6">
+            <div class="max-w-5xl mx-auto text-center">
+                <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9] reveal-anim">
+                    VOTRE VISION <br>
+                    <span class="italic gradient-text">DEVIENT RÉALITÉ.</span>
+                </h1>
+                <p class="text-slate-500 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed reveal-anim">
+                    IAViDEO-91 transforme vos concepts en bandes-annonces cinématographiques professionnelles.
+                </p>
+                <div class="flex justify-center gap-4 reveal-anim">
+                    <button onclick="showPage('portfolio')" class="px-10 py-5 bg-blue-600 text-white font-black rounded-2xl shadow-xl">Voir le portfolio</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Concept André-Marc (TON CODE) -->
+        <section id="concept" class="py-24 bg-slate-50 px-6 overflow-hidden">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+                <div class="w-full md:w-1/2 relative">
+                    <div class="absolute -top-12 -left-12 w-64 h-64 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
+                    <div class="relative bg-white p-4 rounded-[2.5rem] shadow-2xl -rotate-1 hover:rotate-0 transition-transform duration-500">
+                        <img src="https://i.postimg.cc/K83F1Vf5/grok-image-48d7c764-3b58-441b-ab8e-7190cd0ebe73.jpg" class="rounded-[2rem] w-full filter brightness-95" alt="André-Marc CHERKASSKIY">
+                        <div class="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-2xl shadow-xl">
+                            <i class="fas fa-quote-left text-2xl opacity-50 mb-2 block"></i>
+                            <p class="font-bold italic text-sm">"L'IA est le pinceau, <br>votre vie est la toile."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="text-5xl font-black mb-8 uppercase italic leading-none">André-Marc <br><span class="text-blue-600 tracking-tighter not-italic">CHERKASSKIY</span></h2>
+                    <div class="space-y-6 text-slate-600 text-lg leading-relaxed mb-10">
+                        <p>Basé à <strong>Pantin et Viry-Chatillon</strong>, je mets mon expertise en IA au service de vos récits personnels. Mon objectif est de démocratiser le rendu "Hollywood" pour que chaque instant fort de votre vie ait sa propre bande-annonce.</p>
+                        <p class="font-medium text-slate-800 italic">Discutons de votre projet au <span class="text-blue-600">07.49.51.83.36</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PAGE PORTFOLIO (TON CODE) -->
+    <main id="portfolio-page" class="page-content pt-32 pb-24 px-6">
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                 <div>
@@ -238,120 +256,112 @@
                 </div>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- Événements -->
-    <section id="evenements" class="py-24 bg-slate-900 text-white overflow-hidden">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-20 reveal opacity-0">
-                <span class="text-blue-500 font-black text-xs uppercase tracking-[0.3em] mb-4 block">La Magie de l'IA</span>
-                <h2 class="text-4xl md:text-6xl font-black uppercase italic mb-6">Une seule photo suffit.</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto text-lg">Confiez-moi un simple cliché. Je le transforme en un film mémorable pour tous les moments qui comptent dans votre vie.</p>
+    <!-- PAGE ÉVÉNEMENTS (TON CODE) -->
+    <main id="evenements-page" class="page-content pt-20 pb-24 min-h-screen bg-slate-900">
+        <section id="evenements" class="py-24 bg-slate-900 text-white overflow-hidden">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-20">
+                    <span class="text-blue-500 font-black text-xs uppercase tracking-[0.3em] mb-4 block">La Magie de l'IA</span>
+                    <h2 class="text-4xl md:text-6xl font-black uppercase italic mb-6">Une seule photo suffit.</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-lg">Confiez-moi un simple cliché. Je le transforme en un film mémorable pour tous les moments qui comptent dans votre vie.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="event-card bg-slate-800/50 p-10 rounded-[2.5rem] border border-slate-700/50">
+                        <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-900/20">
+                            <i class="fas fa-heart text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black uppercase italic mb-4">Mariage & Sim'ha</h3>
+                        <p class="text-slate-400 leading-relaxed italic">"Sublimez votre union. Du portrait des mariés à une bande-annonce épique de votre rencontre."</p>
+                    </div>
+                    <div class="event-card bg-slate-800/50 p-10 rounded-[2.5rem] border border-slate-700/50">
+                        <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-900/20">
+                            <i class="fas fa-star text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black uppercase italic mb-4">Bar Mitzva & Fêtes</h3>
+                        <p class="text-slate-400 leading-relaxed italic">"Donnez à votre enfant le rôle principal de son propre blockbuster. Une entrée en scène inoubliable."</p>
+                    </div>
+                    <div class="event-card bg-blue-600 p-10 rounded-[2.5rem]">
+                        <div class="w-14 h-14 bg-white text-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-white/10">
+                            <i class="fas fa-dove text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black uppercase italic mb-4">Hommage & Mémoire</h3>
+                        <p class="text-blue-100 leading-relaxed italic">"Faites revivre un proche disparu. À partir d'une ancienne photo, je recréé sa présence pour vos événements."</p>
+                    </div>
+                </div>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="event-card bg-slate-800/50 p-10 rounded-[2.5rem] border border-slate-700/50 reveal opacity-0">
-                    <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-900/20">
-                        <i class="fas fa-heart text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-black uppercase italic mb-4">Mariage & Sim'ha</h3>
-                    <p class="text-slate-400 leading-relaxed italic">"Sublimez votre union. Du portrait des mariés à une bande-annonce épique de votre rencontre."</p>
+        </section>
+    </main>
+
+    <!-- PAGE TARIFS (TON CODE) -->
+    <main id="tarifs-page" class="page-content pt-32 pb-24 px-6">
+        <section id="tarifs" class="py-32 px-6">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
+                <div class="p-10 bg-white border border-slate-100 rounded-[3rem] shadow-sm flex flex-col h-full text-center">
+                    <h3 class="text-2xl font-black mb-2 uppercase">Pack 3 Teasers</h3>
+                    <div class="text-5xl font-black mb-8 text-slate-900">15€</div>
+                    <ul class="space-y-4 mb-12 flex-grow">
+                        <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>3 Vidéos de 15-20s</li>
+                        <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Format TikTok / Reels</li>
+                        <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
+                    </ul>
+                    <a href="tel:0749518336" class="py-5 bg-slate-900 text-white rounded-2xl font-black uppercase hover:bg-blue-600 transition-all">Commander</a>
                 </div>
-                <div class="event-card bg-slate-800/50 p-10 rounded-[2.5rem] border border-slate-700/50 reveal opacity-0">
-                    <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-900/20">
-                        <i class="fas fa-star text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-black uppercase italic mb-4">Bar Mitzva & Fêtes</h3>
-                    <p class="text-slate-400 leading-relaxed italic">"Donnez à votre enfant le rôle principal de son propre blockbuster. Une entrée en scène inoubliable."</p>
+                <div class="p-10 bg-slate-900 text-white rounded-[3rem] shadow-2xl flex flex-col h-full text-center border-4 border-blue-600">
+                    <h3 class="text-2xl font-black mb-2 uppercase italic text-blue-500">Blockbuster</h3>
+                    <div class="text-5xl font-black mb-8 text-white">30€</div>
+                    <ul class="space-y-4 mb-12 flex-grow">
+                        <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Vidéo 60-90 sec (16:9)</li>
+                        <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Voix-off & Sound Design</li>
+                        <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
+                    </ul>
+                    <a href="tel:0749518336" class="py-5 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-white hover:text-blue-600 transition-all">Commander</a>
                 </div>
-                <div class="event-card bg-blue-600 p-10 rounded-[2.5rem] reveal opacity-0">
-                    <div class="w-14 h-14 bg-white text-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-white/10">
-                        <i class="fas fa-dove text-2xl"></i>
+            </div>
+        </section>
+    </main>
+
+    <!-- PAGE CONTACT -->
+    <main id="contact-page" class="page-content pt-32 pb-24 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-5xl font-black uppercase italic mb-12 tracking-tighter">Contact</h2>
+            <div class="grid md:grid-cols-2 gap-12 text-left">
+                <div class="space-y-6">
+                    <div class="bg-blue-50 p-8 rounded-[2rem]">
+                        <p class="text-blue-600 font-black uppercase text-xs mb-2 tracking-widest">WhatsApp / Tel</p>
+                        <a href="tel:0749518336" class="text-2xl font-black tracking-tighter">07.49.51.83.36</a>
                     </div>
-                    <h3 class="text-2xl font-black uppercase italic mb-4">Hommage & Mémoire</h3>
-                    <p class="text-blue-100 leading-relaxed italic">"Faites revivre un proche disparu. À partir d'une ancienne photo, je recréé sa présence pour vos événements."</p>
+                    <div class="bg-slate-50 p-8 rounded-[2rem]">
+                        <p class="text-slate-400 font-black uppercase text-xs mb-2 tracking-widest">Email</p>
+                        <p class="text-sm font-bold italic">ia.studio91170@gmail.com</p>
+                    </div>
                 </div>
+                <form action="https://formspree.io/f/ia.studio91170@gmail.com" method="POST" class="space-y-4">
+                    <input type="text" name="name" placeholder="Nom" required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none">
+                    <input type="email" name="email" placeholder="Email" required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none">
+                    <textarea name="message" rows="4" placeholder="Votre projet..." required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none resize-none"></textarea>
+                    <button type="submit" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase shadow-lg shadow-blue-200">Envoyer</button>
+                </form>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- Concept André-Marc -->
-    <section id="concept" class="py-24 bg-slate-50 px-6 overflow-hidden">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
-            <div class="w-full md:w-1/2 relative">
-                <div class="absolute -top-12 -left-12 w-64 h-64 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
-                <div class="relative bg-white p-4 rounded-[2.5rem] shadow-2xl -rotate-1 hover:rotate-0 transition-transform duration-500">
-                    <img src="https://i.postimg.cc/K83F1Vf5/grok-image-48d7c764-3b58-441b-ab8e-7190cd0ebe73.jpg" class="rounded-[2rem] w-full filter brightness-95" alt="André-Marc CHERKASSKIY">
-                    <div class="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-2xl shadow-xl">
-                        <i class="fas fa-quote-left text-2xl opacity-50 mb-2 block"></i>
-                        <p class="font-bold italic text-sm">"L'IA est le pinceau, <br>votre vie est la toile."</p>
-                    </div>
-                </div>
-            </div>
-            <div class="md:w-1/2">
-                <h2 class="text-5xl font-black mb-8 uppercase italic leading-none">André-Marc <br><span class="text-blue-600 tracking-tighter not-italic">CHERKASSKIY</span></h2>
-                <div class="space-y-6 text-slate-600 text-lg leading-relaxed mb-10">
-                    <p>Basé à <strong>Pantin et Viry-Chatillon</strong>, je mets mon expertise en IA au service de vos récits personnels. Mon objectif est de démocratiser le rendu "Hollywood" pour que chaque instant fort de votre vie ait sa propre bande-annonce.</p>
-                    <p class="font-medium text-slate-800 italic">Discutons de votre projet au <span class="text-blue-600">07.49.51.83.36</span></p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tarifs -->
-    <section id="tarifs" class="py-32 px-6">
-        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
-            <div class="p-10 bg-white border border-slate-100 rounded-[3rem] shadow-sm flex flex-col h-full text-center">
-                <h3 class="text-2xl font-black mb-2 uppercase">Pack 3 Teasers</h3>
-                <div class="text-5xl font-black mb-8 text-slate-900">15€</div>
-                <ul class="space-y-4 mb-12 flex-grow">
-                    <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>3 Vidéos de 15-20s</li>
-                    <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Format TikTok / Reels</li>
-                    <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
-                </ul>
-                <a href="tel:0749518336" class="py-5 bg-slate-900 text-white rounded-2xl font-black uppercase hover:bg-blue-600 transition-all">Commander</a>
-            </div>
-            <div class="p-10 bg-slate-900 text-white rounded-[3rem] shadow-2xl flex flex-col h-full text-center border-4 border-blue-600">
-                <h3 class="text-2xl font-black mb-2 uppercase italic text-blue-500">Blockbuster</h3>
-                <div class="text-5xl font-black mb-8 text-white">30€</div>
-                <ul class="space-y-4 mb-12 flex-grow">
-                    <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Vidéo 60-90 sec (16:9)</li>
-                    <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Voix-off & Sound Design</li>
-                    <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
-                </ul>
-                <a href="tel:0749518336" class="py-5 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-white hover:text-blue-600 transition-all">Commander</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-20 bg-slate-50 border-t border-slate-100 text-center">
-        <div class="font-black text-2xl mb-4 italic tracking-tighter uppercase">IAViDEO-91</div>
-        <p class="text-slate-500 font-bold mb-2 uppercase tracking-widest text-xs">André-Marc Cherkasskiy</p>
-        <p class="text-slate-400 font-bold mb-8 text-sm italic">07.49.51.83.36 | ia.studio91170@gmail.com</p>
-        <p class="text-[10px] text-slate-300 font-bold uppercase tracking-[0.4em]">© 2026 // Réalisé à Pantin & Viry</p>
+    <footer class="py-12 bg-slate-50 border-t text-center">
+        <div class="font-black text-xl italic uppercase mb-2">IAViDEO-91</div>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">© 2026 // Pantin & Viry-Chatillon</p>
     </footer>
 
     <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('reveal');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        document.querySelectorAll('video').forEach(video => {
-            video.addEventListener('loadedmetadata', () => {
-                video.currentTime = 1;
-            });
-            if (video.readyState >= 1) {
-                video.currentTime = 1;
-            }
-        });
-
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.querySelectorAll('img, video').forEach(el => {
-            el.addEventListener('dragstart', e => e.preventDefault());
-        });
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
+            document.getElementById(pageId + '-page').classList.add('page-active');
+            window.scrollTo(0, 0);
+        }
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('active');
+        }
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>
