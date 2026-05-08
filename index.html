@@ -194,7 +194,7 @@
         </section>
 
         <!-- Concept André-Marc -->
-        <section id="concept" class="py-24 bg-slate-50 px-6 overflow-hidden">
+        <section id="concept" class="py-24 bg-slate-50 px-6 overflow-hidden border-b border-slate-100">
             <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
                 <div class="w-full md:w-1/2 relative">
                     <div class="absolute -top-12 -left-12 w-64 h-64 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
@@ -215,9 +215,39 @@
                 </div>
             </div>
         </section>
+
+        <!-- NOUVELLE SECTION : LES LOCAUX -->
+        <section id="locaux" class="py-24 bg-white px-6 overflow-hidden">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row-reverse items-center gap-16">
+                    <div class="w-full md:w-1/2 relative">
+                        <div class="absolute -bottom-12 -right-12 w-64 h-64 bg-slate-100 rounded-full blur-3xl opacity-50"></div>
+                        <div class="relative bg-slate-900 p-2 rounded-[2.5rem] shadow-2xl rotate-1 hover:rotate-0 transition-all duration-500 group">
+                            <img src="https://i.postimg.cc/25sv37cX/grok-image-4d507441-be60-4623-85ed-b0fa4821fa41.jpg" class="rounded-[2rem] w-full opacity-90 group-hover:opacity-100 transition-opacity" alt="Locaux IAViDEO-91 Viry-Chatillon">
+                            <div class="absolute top-6 left-6 bg-blue-600/90 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest">
+                                Siège Social
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <span class="text-blue-600 font-black text-xs uppercase tracking-[0.2em] mb-4 block">Proximité & Qualité</span>
+                        <h2 class="text-5xl font-black mb-8 uppercase tracking-tighter leading-none">Nos locaux à <br><span class="italic text-slate-400">Viry-Chatillon</span></h2>
+                        <div class="space-y-6 text-slate-600 text-lg leading-relaxed mb-10">
+                            <p>C'est ici, au cœur de l'Essonne, que vos projets prennent vie. Nos studios équipés des dernières technologies nous permettent de traiter vos demandes avec une réactivité maximale.</p>
+                            <div class="flex items-center gap-4 text-slate-900 font-bold">
+                                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-location-dot text-blue-600"></i>
+                                </div>
+                                <span>Viry-Chatillon, 91170</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- PAGE PORTFOLIO -->
+    <!-- PAGE     <!-- PAGE PORTFOLIO -->
     <main id="portfolio-page" class="page-content pt-32 pb-24 px-6">
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -338,27 +368,42 @@
 
     <!-- PAGE TARIFS -->
     <main id="tarifs-page" class="page-content pt-32 pb-24 px-6">
-        <section id="tarifs" class="py-32 px-6">
-            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
-                <div class="p-10 bg-white border border-slate-100 rounded-[3rem] shadow-sm flex flex-col h-full text-center">
-                    <h3 class="text-2xl font-black mb-2 uppercase">Pack 3 Teasers</h3>
-                    <div class="text-5xl font-black mb-8 text-slate-900">15€</div>
-                    <ul class="space-y-4 mb-12 flex-grow">
-                        <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>3 Vidéos de 15-20s</li>
-                        <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Format TikTok / Reels</li>
-                        <li class="font-semibold text-slate-600 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
+        <section id="tarifs" class="py-16 px-6">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+                <!-- Nouveau Tarif 5.99 -->
+                <div class="p-8 bg-white border border-slate-100 rounded-[3rem] shadow-sm flex flex-col h-full text-center">
+                    <h3 class="text-xl font-black mb-2 uppercase">Pack Découverte</h3>
+                    <div class="text-4xl font-black mb-6 text-slate-900">5,99€</div>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="font-semibold text-slate-600 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>1 Vidéo de 30-40s</li>
+                        <li class="font-semibold text-slate-600 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>Format TikTok / Reels</li>
+                        <li class="font-semibold text-slate-600 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
                     </ul>
-                    <a href="tel:0749518336" class="py-5 bg-slate-900 text-white rounded-2xl font-black uppercase hover:bg-blue-600 transition-all">Commander</a>
+                    <a href="tel:0749518336" class="py-4 bg-slate-100 text-slate-900 rounded-2xl font-black uppercase hover:bg-blue-600 hover:text-white transition-all text-sm">Commander</a>
                 </div>
-                <div class="p-10 bg-slate-900 text-white rounded-[3rem] shadow-2xl flex flex-col h-full text-center border-4 border-blue-600">
-                    <h3 class="text-2xl font-black mb-2 uppercase italic text-blue-500">Blockbuster</h3>
-                    <div class="text-5xl font-black mb-8 text-white">30€</div>
-                    <ul class="space-y-4 mb-12 flex-grow">
-                        <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Vidéo 60-90 sec (16:9)</li>
-                        <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Voix-off & Sound Design</li>
-                        <li class="font-semibold text-slate-300 italic"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
+
+                <!-- Pack 3 Teasers -->
+                <div class="p-8 bg-white border border-slate-100 rounded-[3rem] shadow-sm flex flex-col h-full text-center">
+                    <h3 class="text-xl font-black mb-2 uppercase">Pack 3 Teasers</h3>
+                    <div class="text-4xl font-black mb-6 text-slate-900">15€</div>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="font-semibold text-slate-600 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>3 Vidéos de 15-20s</li>
+                        <li class="font-semibold text-slate-600 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>Format TikTok / Reels</li>
+                        <li class="font-semibold text-slate-600 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
                     </ul>
-                    <a href="tel:0749518336" class="py-5 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-white hover:text-blue-600 transition-all">Commander</a>
+                    <a href="tel:0749518336" class="py-4 bg-slate-900 text-white rounded-2xl font-black uppercase hover:bg-blue-600 transition-all text-sm">Commander</a>
+                </div>
+
+                <!-- Blockbuster -->
+                <div class="p-8 bg-slate-900 text-white rounded-[3rem] shadow-2xl flex flex-col h-full text-center border-4 border-blue-600">
+                    <h3 class="text-xl font-black mb-2 uppercase italic text-blue-500">Blockbuster</h3>
+                    <div class="text-4xl font-black mb-6 text-white">24,99€</div>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="font-semibold text-slate-300 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>Vidéo 60-90 sec (16:9)</li>
+                        <li class="font-semibold text-slate-300 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>Voix-off & Sound Design</li>
+                        <li class="font-semibold text-slate-300 italic text-sm"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
+                    </ul>
+                    <a href="tel:0749518336" class="py-4 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-white hover:text-blue-600 transition-all text-sm">Commander</a>
                 </div>
             </div>
         </section>
