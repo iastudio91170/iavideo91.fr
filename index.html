@@ -107,6 +107,13 @@
         .photo-grid-item:hover img {
             transform: scale(1.05);
         }
+
+        .testimonial-card {
+            transition: transform 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
     </style>
 </head>
 <body class="bg-white text-slate-900">
@@ -168,7 +175,7 @@
             </div>
         </section>
 
-        <!-- Contenu Accueil : Focus Produit -->
+        <!-- Focus Produit -->
         <section class="pb-24 px-6 reveal-anim">
             <div class="max-w-6xl mx-auto">
                 <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-blue-100 border border-slate-50">
@@ -189,11 +196,9 @@
                             </div>
                         </div>
                         <div class="w-full lg:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Image source -->
                             <div class="rounded-3xl overflow-hidden shadow-lg aspect-[9/16] md:aspect-auto">
                                 <img src="https://i.postimg.cc/yN3Lmt8K/image.jpg" class="w-full h-full object-cover" alt="Concept Art Original">
                             </div>
-                            <!-- Vidéo résultante -->
                             <div class="rounded-3xl overflow-hidden shadow-lg bg-black aspect-video md:aspect-auto flex items-center">
                                 <div class="video-card-inner w-full" onclick="window.open('https://youtu.be/UwDfc5snIIs', '_blank')">
                                     <img src="https://img.youtube.com/vi/UwDfc5snIIs/maxresdefault.jpg" class="w-full h-full object-cover opacity-70" alt="Miniature Vidéo">
@@ -231,7 +236,7 @@
             </div>
         </section>
 
-        <!-- NOUVELLE SECTION : LES LOCAUX -->
+        <!-- SECTION : LES LOCAUX -->
         <section id="locaux" class="py-24 bg-white px-6 overflow-hidden">
             <div class="max-w-6xl mx-auto">
                 <div class="flex flex-col md:flex-row-reverse items-center gap-16">
@@ -257,6 +262,112 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION TEMOIGNAGES (AJOUTÉE EN BAS DE PAGE ACCUEIL) -->
+        <section id="home-testimonials" class="py-24 bg-slate-50 border-t border-slate-100">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <p class="text-blue-600 font-black text-xs uppercase tracking-[0.2em] mb-4">Ils nous ont fait confiance</p>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 leading-none">Avis Clients</h2>
+                    <div class="flex justify-center gap-1 text-yellow-400 text-xl">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Témoignage 1 -->
+                    <div class="testimonial-card bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                        <div class="flex gap-1 text-yellow-400 text-xs mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 italic mb-6 leading-relaxed">"Incroyable ! J'ai envoyé une photo de mon fils pour sa Bar Mitzva, le résultat est digne d'un film Marvel. Tout le monde était bluffé pendant la soirée."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">S</div>
+                            <div>
+                                <p class="font-black text-sm uppercase">Sarah L.</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Bar Mitzva</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Témoignage 2 -->
+                    <div class="testimonial-card bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                        <div class="flex gap-1 text-yellow-400 text-xs mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 italic mb-6 leading-relaxed">"André-Marc a fait un travail de dingue pour notre mariage. La vidéo d'ouverture a mis une ambiance de fou direct. Le paiement à la livraison, c'est vraiment rassurant."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">M</div>
+                            <div>
+                                <p class="font-black text-sm uppercase">Mickaël B.</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Mariage</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Témoignage 3 -->
+                    <div class="testimonial-card bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                        <div class="flex gap-1 text-yellow-400 text-xs mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 italic mb-6 leading-relaxed">"J'ai testé le pack retouche photo IA pour mes réseaux, c'est super propre. Rapide, efficace et les photos sont transformées. Je recommande à 100%."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">Y</div>
+                            <div>
+                                <p class="font-black text-sm uppercase">Yanis K.</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Shooting Photo IA</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Témoignage 4 -->
+                    <div class="testimonial-card bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                        <div class="flex gap-1 text-yellow-400 text-xs mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 italic mb-6 leading-relaxed">"Un hommage magnifique pour mon grand-père. Voir sa photo s'animer avec autant de réalisme nous a beaucoup touché. Merci André-Marc pour ton talent."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">D</div>
+                            <div>
+                                <p class="font-black text-sm uppercase">Deborah A.</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Hommage Familial</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Témoignage 5 -->
+                    <div class="testimonial-card bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                        <div class="flex gap-1 text-yellow-400 text-xs mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 italic mb-6 leading-relaxed">"J'avais besoin d'un teaser rapide pour un événement pro à Pantin. Livré en moins de 24h, qualité au top. Le concept est génial."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">L</div>
+                            <div>
+                                <p class="font-black text-sm uppercase">Lucas V.</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Événementiel</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Témoignage 6 -->
+                    <div class="testimonial-card bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                        <div class="flex gap-1 text-yellow-400 text-xs mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 italic mb-6 leading-relaxed">"Franchement bluffé par le rendu Cinéma 4K. On dirait une vraie production hollywoodienne. Le rapport qualité-prix est imbattable."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">J</div>
+                            <div>
+                                <p class="font-black text-sm uppercase">Julien M.</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Clip Teaser</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-16 text-center">
+                    <button onclick="showPage('contact')" class="px-8 py-4 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-lg shadow-blue-200">
+                        Faites comme eux, contactez-moi
+                    </button>
                 </div>
             </div>
         </section>
@@ -300,7 +411,6 @@
                 </div>
             </div>
 
-            <!-- Sections mixtes Image/Vidéo -->
             <div class="flex flex-col md:flex-row gap-6 items-stretch mb-6">
                 <div class="w-full md:w-1/3">
                     <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] cursor-pointer h-full">
@@ -322,7 +432,7 @@
                 </div>
             </div>
 
-            <!-- Bloc verrouillé yN3Lmt8K + UwDfc5snIIs -->
+            <!-- Bloc yN3Lmt8K + UwDfc5snIIs -->
             <div class="flex flex-col md:flex-row gap-6 items-stretch mb-24">
                 <div class="w-full md:w-1/3">
                     <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] cursor-pointer h-full">
@@ -374,12 +484,6 @@
                         <img src="https://i.postimg.cc/R0ZvrWcj/r9a-HU.jpg" class="w-full h-full object-cover" alt="Retouche Photo IA 6">
                     </div>
                 </div>
-                
-                <div class="mt-12 text-center">
-                    <button onclick="showPage('tarifs')" class="px-8 py-4 bg-slate-900 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:bg-blue-600 transition-colors shadow-lg">
-                        Voir les tarifs Photo
-                    </button>
-                </div>
             </div>
         </div>
     </main>
@@ -422,7 +526,14 @@
 
     <!-- PAGE TARIFS -->
     <main id="tarifs-page" class="page-content pt-32 pb-24 px-6">
-        <section id="tarifs" class="py-16 px-6">
+        <section id="tarifs" class="py-8 px-6">
+            <div class="max-w-6xl mx-auto mb-12">
+                <div class="bg-blue-600 text-white p-4 rounded-2xl flex items-center justify-center gap-3 shadow-xl">
+                    <i class="fas fa-truck-fast text-xl"></i>
+                    <p class="font-bold text-sm uppercase tracking-wider">Commandez maintenant : Vous ne payez qu'à la livraison !</p>
+                </div>
+            </div>
+
             <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Pack Découverte -->
                 <div class="p-6 bg-white border border-slate-100 rounded-[3rem] shadow-sm flex flex-col h-full text-center hover:shadow-md transition-shadow">
@@ -433,7 +544,9 @@
                         <li class="font-semibold text-slate-600 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Format TikTok / Reels</li>
                         <li class="font-semibold text-slate-600 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
                     </ul>
-                    <button onclick="selectOffer('Pack Découverte')" class="py-3 bg-slate-50 text-slate-900 rounded-2xl font-black uppercase hover:bg-blue-600 hover:text-white transition-all text-[11px] tracking-widest">Commander</button>
+                    <button onclick="selectOffer('Pack Découverte')" class="py-4 bg-slate-50 text-slate-900 rounded-2xl font-black uppercase hover:bg-blue-600 hover:text-white transition-all text-xs tracking-widest">
+                        Commander
+                    </button>
                 </div>
 
                 <!-- Pack Retouche Photo IA -->
@@ -445,7 +558,9 @@
                         <li class="font-semibold text-slate-600 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Nettoyage & Amélioration</li>
                         <li class="font-semibold text-slate-600 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Optimisation Lumière</li>
                     </ul>
-                    <button onclick="selectOffer('Retouche Photo IA')" class="py-3 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-blue-700 transition-all text-[11px] tracking-widest">Commander</button>
+                    <button onclick="selectOffer('Retouche Photo IA')" class="py-4 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-blue-700 transition-all text-xs tracking-widest">
+                        Commander
+                    </button>
                 </div>
 
                 <!-- Pack 3 Teasers -->
@@ -457,7 +572,9 @@
                         <li class="font-semibold text-slate-600 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Format TikTok / Reels</li>
                         <li class="font-semibold text-slate-600 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
                     </ul>
-                    <button onclick="selectOffer('Pack 3 Teasers')" class="py-3 bg-slate-900 text-white rounded-2xl font-black uppercase hover:bg-blue-600 transition-all text-[11px] tracking-widest">Commander</button>
+                    <button onclick="selectOffer('Pack 3 Teasers')" class="py-4 bg-slate-900 text-white rounded-2xl font-black uppercase hover:bg-blue-600 transition-all text-xs tracking-widest">
+                        Commander
+                    </button>
                 </div>
 
                 <!-- Blockbuster -->
@@ -469,7 +586,9 @@
                         <li class="font-semibold text-slate-300 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Voix-off & Sound Design</li>
                         <li class="font-semibold text-slate-300 italic text-xs"><i class="fas fa-check text-blue-500 mr-2"></i>Qualité Cinéma 4K</li>
                     </ul>
-                    <button onclick="selectOffer('Pack Blockbuster')" class="py-3 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-white hover:text-blue-600 transition-all text-[11px] tracking-widest">Commander</button>
+                    <button onclick="selectOffer('Pack Blockbuster')" class="py-4 bg-blue-600 text-white rounded-2xl font-black uppercase hover:bg-white hover:text-blue-600 transition-all text-xs tracking-widest">
+                        Commander
+                    </button>
                 </div>
             </div>
         </section>
@@ -490,7 +609,6 @@
                         <p class="text-sm font-bold italic">andre.c@iavideo91.fr</p>
                     </div>
                 </div>
-                <!-- Formulaire Formspree -->
                 <form id="contact-form" action="https://formspree.io/f/mqendolk" method="POST" class="space-y-4">
                     <input type="text" name="name" placeholder="Nom" required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all">
                     <input type="email" name="_replyto" placeholder="Email" required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all">
@@ -517,16 +635,13 @@
             document.getElementById('mobile-menu').classList.toggle('active');
         }
 
-        /** * Fonction pour présélectionner l'offre et envoyer sur la page contact
-         */
         function selectOffer(offerName) {
             const messageField = document.getElementById('contact-message');
             if (messageField) {
-                messageField.value = "Bonjour André-Marc, je suis intéressé par l'offre : " + offerName + ". ";
+                messageField.value = "Bonjour André-Marc, je souhaite commander l'offre : " + offerName + ". (Paiement à la livraison)";
             }
             showPage('contact');
             
-            // On focus le premier champ pour que l'utilisateur n'ait plus qu'à taper
             setTimeout(() => {
                 const nameInput = document.querySelector('#contact-form input[name="name"]');
                 if (nameInput) nameInput.focus();
