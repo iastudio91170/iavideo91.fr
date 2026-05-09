@@ -96,6 +96,11 @@
             background: radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.05) 0%, #ffffff 100%); 
         }
 
+        /* === OFFSET NAV FIXE === */
+        .page-content { scroll-margin-top: 120px; }
+        .page-content > section:first-child,
+        .page-content > div:first-child { padding-top: 130px !important; }
+
         .glass-nav {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
@@ -1005,13 +1010,10 @@
 
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav border-b border-slate-100 py-4">
+    <nav class="fixed w-full z-50 glass-nav border-b border-slate-100 py-2">
         <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
-            <a href="#" onclick="showPage('home')" class="flex items-center gap-2 font-black text-2xl tracking-tighter group">
-                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-lg shadow-lg shadow-blue-200">
-                    <i class="fas fa-film"></i>
-                </div>
-                <span>IAViDEO-91</span>
+            <a href="#" onclick="showPage('home')" class="flex items-center group">
+                <img src="data:image/png;base64,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" alt="IAViDEO-91" style="height:100px;width:auto;" class="group-hover:scale-105 transition-transform duration-300">
             </a>
             
             <div class="hidden md:flex items-center gap-8 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500">
@@ -1361,18 +1363,24 @@
     </main>
 
     <!-- PAGE PORTFOLIO -->
-    <main id="portfolio-page" class="page-content pt-32 pb-24 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+    <main id="portfolio-page" class="page-content pb-24">
+
+        <!-- HERO -->
+        <section class="relative pt-40 pb-16 px-6 bg-slate-950 overflow-hidden">
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 20% 60%, rgba(37,99,235,0.12) 0%, transparent 55%);"></div>
+            <div class="relative max-w-6xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <p class="text-blue-600 font-black text-xs uppercase tracking-[0.2em] mb-3">Galerie Vidéo</p>
-                    <h2 class="text-4xl font-black tracking-tighter uppercase">Nos Réalisations</h2>
+                    <span class="text-blue-400 font-black text-xs uppercase tracking-[0.3em] mb-4 block">Galerie Vidéo</span>
+                    <h1 class="text-5xl md:text-7xl font-black uppercase italic text-white leading-[0.88] tracking-tighter">Nos<br><span class="text-blue-400">Réalisations.</span></h1>
                 </div>
-                <p class="text-slate-400 max-w-xs text-sm font-medium">L'IA au service de l'émotion et du grand spectacle.</p>
+                <p class="text-slate-400 max-w-xs text-sm leading-relaxed md:text-right">L'IA au service de l'émotion et du grand spectacle. Chaque projet, une transformation.</p>
             </div>
+        </section>
+
+        <div class="max-w-6xl mx-auto px-6">
 
             <!-- Carousel Netflix Shorts -->
-            <div class="netflix-carousel mb-12">
+            <div class="netflix-carousel my-12">
                 <button class="carousel-btn-left"><i class="fas fa-chevron-left"></i></button>
                 <button class="carousel-btn-right"><i class="fas fa-chevron-right"></i></button>
                 <div class="carousel-track px-2">
@@ -1385,21 +1393,15 @@
                         <span class="share-btn" onclick="shareVideo('https://youtube.com/shorts/hSwoXv6nlOQ')"><i class="fas fa-share-nodes"></i></span>
                     </div>
                     <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100" style="width:220px;height:390px;flex-shrink:0;">
-                        <video class="w-full h-full object-cover" autoplay muted loop playsinline preload="metadata">
-                            <source src="https://files.catbox.moe/vpyo4e.mp4" type="video/mp4">
-                        </video>
+                        <video class="w-full h-full object-cover" autoplay muted loop playsinline preload="metadata"><source src="https://files.catbox.moe/vpyo4e.mp4" type="video/mp4"></video>
                         <span class="view-count"><i class="fas fa-eye"></i> 1.8k</span>
                     </div>
                     <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100" style="width:220px;height:390px;flex-shrink:0;">
-                        <video class="w-full h-full object-cover" autoplay muted loop playsinline preload="metadata">
-                            <source src="https://files.catbox.moe/638552.mp4" type="video/mp4">
-                        </video>
+                        <video class="w-full h-full object-cover" autoplay muted loop playsinline preload="metadata"><source src="https://files.catbox.moe/638552.mp4" type="video/mp4"></video>
                         <span class="view-count"><i class="fas fa-eye"></i> 3.1k</span>
                     </div>
                     <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100" style="width:220px;height:390px;flex-shrink:0;">
-                        <video class="w-full h-full object-cover" autoplay muted loop playsinline preload="metadata">
-                            <source src="https://files.catbox.moe/4igwje.mp4" type="video/mp4">
-                        </video>
+                        <video class="w-full h-full object-cover" autoplay muted loop playsinline preload="metadata"><source src="https://files.catbox.moe/4igwje.mp4" type="video/mp4"></video>
                         <span class="view-count"><i class="fas fa-eye"></i> 987</span>
                     </div>
                     <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100" style="width:220px;height:390px;flex-shrink:0;">
@@ -1414,162 +1416,173 @@
                     <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100" style="width:220px;height:390px;flex-shrink:0;">
                         <img src="https://i.postimg.cc/hPdgGKdt/grok-image-6d08857f-ea1d-49e3-b36e-634aad862888.jpg" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Concept Art 3">
                     </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/MpJRpLRR/Cersei.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Cersei">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/L8Ff8Wf3/Daenerys.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Daenerys">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/mgWMgnMj/Deadpooland-Wolv.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Deadpool & Wolverine">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/x1VH1ZHt/Drogo.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Drogo">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/K8hL8WLV/John.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="John">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/7Z1zGNn8/Ramsay.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Ramsay">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/nhf7hWBf/Nos4a2.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="NOS4A2">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/bwfbw5bW/La-cite-de-la-peur.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="La Cité de la Peur">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/x1VH1ZMD/Le-jaguar.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Le Jaguar">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/GmPD8jxL/Squid-game.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Squid Game">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/Qdg79qJM/the-boy.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="The Boy">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/Nj8X9xkY/rencontre-avec-Joe-black.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Rencontre avec Joe Black">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/x1VH1ZHx/Gemini-Generated-Image-hje2kvhje2kvhje2.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Gemini IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/9F7ZV24L/17391954-8217-4fd5-b91a-b267d530cf84.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/sDh7yzBw/269895b8-305f-405d-b114-6abc6deeeca5-(1).png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/DyXLFhWG/49c4c554-5266-446a-a5e6-e0b79542c80f.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/qM3y0rt8/709c3d41-70d0-46bc-a1b6-64158fcf0041.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/CLqkY0ZG/709ef2b7-8793-4cb9-8a5f-b902602f9b00.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/fT9mZs39/7b0aed2a-3f16-4214-8eba-d3529c891810.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/sDh7yzBP/906f0724-3a48-4a6d-bc62-7ed131cb701a.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/jSYNS1NP/a6f3618f-2277-4b25-bdc9-39fd0e863572.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/3xQpxqp9/df98111e-b99c-43d2-9f1c-68f4dc51fd91-(1).png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;">
-                        <img src="https://i.postimg.cc/8zgWzYWX/fd4d2d2a-a73f-4b0d-b12a-75e2c70a317b-(1).png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA">
-                    </div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/MpJRpLRR/Cersei.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Cersei"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/L8Ff8Wf3/Daenerys.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Daenerys"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/mgWMgnMj/Deadpooland-Wolv.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Deadpool & Wolverine"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/x1VH1ZHt/Drogo.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Drogo"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/K8hL8WLV/John.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="John"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/7Z1zGNn8/Ramsay.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Ramsay"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/nhf7hWBf/Nos4a2.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="NOS4A2"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/bwfbw5bW/La-cite-de-la-peur.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="La Cité de la Peur"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/x1VH1ZMD/Le-jaguar.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Le Jaguar"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/GmPD8jxL/Squid-game.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Squid Game"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/Qdg79qJM/the-boy.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="The Boy"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/Nj8X9xkY/rencontre-avec-Joe-black.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Rencontre avec Joe Black"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/x1VH1ZHx/Gemini-Generated-Image-hje2kvhje2kvhje2.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Gemini IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/9F7ZV24L/17391954-8217-4fd5-b91a-b267d530cf84.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/sDh7yzBw/269895b8-305f-405d-b114-6abc6deeeca5-(1).png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/DyXLFhWG/49c4c554-5266-446a-a5e6-e0b79542c80f.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/qM3y0rt8/709c3d41-70d0-46bc-a1b6-64158fcf0041.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/CLqkY0ZG/709ef2b7-8793-4cb9-8a5f-b902602f9b00.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/fT9mZs39/7b0aed2a-3f16-4214-8eba-d3529c891810.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/sDh7yzBP/906f0724-3a48-4a6d-bc62-7ed131cb701a.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/jSYNS1NP/a6f3618f-2277-4b25-bdc9-39fd0e863572.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/3xQpxqp9/df98111e-b99c-43d2-9f1c-68f4dc51fd91-(1).png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
+                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900" style="width:220px;height:390px;flex-shrink:0;"><img src="https://i.postimg.cc/8zgWzYWX/fd4d2d2a-a73f-4b0d-b12a-75e2c70a317b-(1).png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Réalisation IA"></div>
                 </div>
             </div>
 
-            <!-- Bloc Vision Futuriste → WanO1vM4j4I -->
-            <div class="flex flex-col md:flex-row gap-6 items-stretch mb-6">
-                <div class="w-full md:w-1/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] cursor-pointer h-full">
-                        <img src="https://i.postimg.cc/R0ff44Y4/grok-image-13ee94c6-2143-4921-888d-c0bca8fa06e8.jpg" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Production Grok">
-                        <div class="video-overlay absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6 text-white pointer-events-none">
-                            <p class="font-bold uppercase tracking-tighter text-sm">Vision Futuriste</p>
-                        </div>
-                    </div>
+            <!-- SÉPARATEUR PROJETS -->
+            <div class="flex items-center gap-4 mb-12 mt-4">
+                <div class="flex-1 h-px bg-slate-200"></div>
+                <div class="flex items-center gap-2 text-slate-400 font-black text-xs uppercase tracking-[0.2em]">
+                    <i class="fas fa-film text-blue-600"></i>
+                    Du concept au rendu final
+                    <i class="fas fa-film text-blue-600"></i>
                 </div>
-                <div class="w-full md:w-2/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
-                        <div class="video-card-inner" onclick="openVideoModal('WanO1vM4j4I')">
-                            <img src="https://img.youtube.com/vi/WanO1vM4j4I/maxresdefault.jpg" class="w-full h-full object-cover opacity-70">
-                            <div class="play-overlay">
-                                <div class="play-icon"><i class="fas fa-play"></i></div>
+                <div class="flex-1 h-px bg-slate-200"></div>
+            </div>
+
+            <!-- PROJET 01 -->
+            <div class="relative mb-16">
+                <div class="absolute -top-4 -left-2 text-[8rem] font-black text-slate-100 leading-none select-none pointer-events-none z-0">01</div>
+                <div class="relative z-10">
+                    <div class="mb-3 flex items-center gap-3">
+                        <span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">Vision Futuriste</span>
+                        <span class="text-slate-400 text-xs font-bold">Brief original → Rendu IA</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-6 items-stretch">
+                        <div class="w-full md:w-1/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-slate-900/80 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-slate-400 inline-block"></span> Brief original
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] h-full">
+                                <img src="https://i.postimg.cc/R0ff44Y4/grok-image-13ee94c6-2143-4921-888d-c0bca8fa06e8.jpg" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Vision Futuriste Brief">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-2/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-blue-600/90 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-300 inline-block animate-pulse"></span> Rendu IA final
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
+                                <div class="video-card-inner" onclick="openVideoModal('WanO1vM4j4I')">
+                                    <img src="https://img.youtube.com/vi/WanO1vM4j4I/maxresdefault.jpg" class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity">
+                                    <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bloc Concept → Vidéo 1 -->
-            <div class="flex flex-col md:flex-row gap-6 items-stretch mb-8">
-                <div class="w-full md:w-1/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] cursor-pointer h-full">
-                        <img src="https://i.postimg.cc/yN3Lmt8K/image.jpg" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Concept Visual Original">
-                        <div class="video-overlay absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6 text-white pointer-events-none">
-                            <p class="font-bold uppercase tracking-tighter text-sm">Concept Art</p>
-                        </div>
+            <!-- PROJET 02 -->
+            <div class="relative mb-16">
+                <div class="absolute -top-4 -left-2 text-[8rem] font-black text-slate-100 leading-none select-none pointer-events-none z-0">02</div>
+                <div class="relative z-10">
+                    <div class="mb-3 flex items-center gap-3">
+                        <span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">Blockbuster IA</span>
+                        <span class="text-slate-400 text-xs font-bold">Brief original → Rendu IA</span>
                     </div>
-                </div>
-                <div class="w-full md:w-2/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
-                        <div class="video-card-inner" onclick="openVideoModal('UwDfc5snIIs')">
-                            <img src="https://img.youtube.com/vi/UwDfc5snIIs/maxresdefault.jpg" class="w-full h-full object-cover opacity-70">
-                            <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-stretch">
+                        <div class="w-full md:w-1/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-slate-900/80 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-slate-400 inline-block"></span> Brief original
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] h-full">
+                                <img src="https://i.postimg.cc/yN3Lmt8K/image.jpg" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Blockbuster Brief">
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bloc Concept → Vidéo 2 -->
-            <div class="flex flex-col md:flex-row gap-6 items-stretch mb-8">
-                <div class="w-full md:w-1/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] cursor-pointer h-full">
-                        <img src="https://i.postimg.cc/KzLj9h0n/Chat-GPT-Image-8-mai-2026-20-11-09.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Concept Visual Original">
-                        <div class="video-overlay absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6 text-white pointer-events-none">
-                            <p class="font-bold uppercase tracking-tighter text-sm">Concept Art</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full md:w-2/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
-                        <div class="video-card-inner" onclick="openVideoModal('ljOD3SDnaNk')">
-                            <img src="https://img.youtube.com/vi/ljOD3SDnaNk/maxresdefault.jpg" class="w-full h-full object-cover opacity-70">
-                            <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+                        <div class="w-full md:w-2/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-blue-600/90 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-300 inline-block animate-pulse"></span> Rendu IA final
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
+                                <div class="video-card-inner" onclick="openVideoModal('UwDfc5snIIs')">
+                                    <img src="https://img.youtube.com/vi/UwDfc5snIIs/maxresdefault.jpg" class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity">
+                                    <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bloc Concept → Vidéo 3 -->
-            <div class="flex flex-col md:flex-row gap-6 items-stretch mb-8">
-                <div class="w-full md:w-1/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] cursor-pointer h-full">
-                        <img src="https://i.postimg.cc/hPdgGKdt/grok-image-6d08857f-ea1d-49e3-b36e-634aad862888.jpg" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Concept Visual Original">
-                        <div class="video-overlay absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6 text-white pointer-events-none">
-                            <p class="font-bold uppercase tracking-tighter text-sm">Concept Art</p>
+            <!-- PROJET 03 -->
+            <div class="relative mb-16">
+                <div class="absolute -top-4 -left-2 text-[8rem] font-black text-slate-100 leading-none select-none pointer-events-none z-0">03</div>
+                <div class="relative z-10">
+                    <div class="mb-3 flex items-center gap-3">
+                        <span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">Teaser Événementiel</span>
+                        <span class="text-slate-400 text-xs font-bold">Brief original → Rendu IA</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-6 items-stretch">
+                        <div class="w-full md:w-1/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-slate-900/80 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-slate-400 inline-block"></span> Brief original
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] h-full">
+                                <img src="https://i.postimg.cc/KzLj9h0n/Chat-GPT-Image-8-mai-2026-20-11-09.png" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Événementiel Brief">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-2/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-blue-600/90 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-300 inline-block animate-pulse"></span> Rendu IA final
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
+                                <div class="video-card-inner" onclick="openVideoModal('ljOD3SDnaNk')">
+                                    <img src="https://img.youtube.com/vi/ljOD3SDnaNk/maxresdefault.jpg" class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity">
+                                    <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="w-full md:w-2/3">
-                    <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
-                        <div class="video-card-inner" onclick="openVideoModal('1yXWsdhEEcU')">
-                            <img src="https://img.youtube.com/vi/1yXWsdhEEcU/maxresdefault.jpg" class="w-full h-full object-cover opacity-70">
-                            <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+            </div>
+
+            <!-- PROJET 04 -->
+            <div class="relative mb-16">
+                <div class="absolute -top-4 -left-2 text-[8rem] font-black text-slate-100 leading-none select-none pointer-events-none z-0">04</div>
+                <div class="relative z-10">
+                    <div class="mb-3 flex items-center gap-3">
+                        <span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">Bande-Annonce Cinéma</span>
+                        <span class="text-slate-400 text-xs font-bold">Brief original → Rendu IA</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-6 items-stretch">
+                        <div class="w-full md:w-1/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-slate-900/80 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-slate-400 inline-block"></span> Brief original
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-100 aspect-[9/16] h-full">
+                                <img src="https://i.postimg.cc/hPdgGKdt/grok-image-6d08857f-ea1d-49e3-b36e-634aad862888.jpg" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="Cinéma Brief">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-2/3 relative">
+                            <div class="absolute top-3 left-3 z-10 bg-blue-600/90 backdrop-blur-sm text-white font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-300 inline-block animate-pulse"></span> Rendu IA final
+                            </div>
+                            <div class="video-card group relative rounded-[2rem] overflow-hidden shadow-2xl bg-slate-900 aspect-video h-full">
+                                <div class="video-card-inner" onclick="openVideoModal('1yXWsdhEEcU')">
+                                    <img src="https://img.youtube.com/vi/1yXWsdhEEcU/maxresdefault.jpg" class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity">
+                                    <div class="play-overlay"><div class="play-icon"><i class="fas fa-play"></i></div></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- SECTION RETOUCHE PHOTO IA -->
-            <div class="mb-16">
+            <div class="mb-16 mt-4">
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div>
                         <p class="text-blue-600 font-black text-xs uppercase tracking-[0.2em] mb-3">Expertise Image</p>
@@ -1852,7 +1865,7 @@
     </main>
 
     <!-- PAGE TARIFS -->
-    <main id="tarifs-page" class="page-content pt-32 pb-24 px-6">
+    <main id="tarifs-page" class="page-content pt-44 pb-24 px-6">
         <section id="tarifs" class="py-8 px-6">
             <div class="max-w-6xl mx-auto mb-8">
                 <!-- Timer livraison -->
@@ -2005,7 +2018,7 @@
             </div>
         </section>
     </main>
-    <main id="contact-page" class="page-content pt-32 pb-24 px-6">
+    <main id="contact-page" class="page-content pt-44 pb-24 px-6">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-5xl font-black uppercase italic mb-12 tracking-tighter">Contact</h2>
             <div class="grid md:grid-cols-2 gap-12 text-left">
@@ -2051,7 +2064,7 @@
     </main>
 
     <!-- PAGE PARRAINAGE -->
-    <main id="parrainage-page" class="page-content pt-32 pb-24 px-6">
+    <main id="parrainage-page" class="page-content pt-44 pb-24 px-6">
         <div class="max-w-3xl mx-auto">
             <div class="text-center mb-12">
                 <div class="text-5xl mb-4">🎁</div>
@@ -2309,7 +2322,7 @@
             <button onclick="openModal('modal-mentions')" class="hover:text-blue-600 transition-colors">MENTIONS LÉGALES &amp; CGV</button>
             <button onclick="openModal('modal-rgpd')" class="hover:text-blue-600 transition-colors">POLITIQUE RGPD</button>
         </div>
-        <div class="font-black text-xl italic uppercase mb-2">IAViDEO-91</div>
+        <img src="data:image/png;base64,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" alt="IAViDEO-91" style="height:100px;width:auto;margin:0 auto 8px;" class="mx-auto">
         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">© 2026 // Pantin & Viry-Chatillon</p>
     </footer>
 
