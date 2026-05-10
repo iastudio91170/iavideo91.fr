@@ -3062,12 +3062,22 @@
         /* === SUPABASE INIT === */
         const SUPABASE_URL = 'https://dbxoacwdalvuqlmamIgu.supabase.co';
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRieG9hY3dkYWx2dXFsbWFtaWd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjE5NjMsImV4cCI6MjA5MzkzNzk2M30.Pu2CrsyhRdC9W7pKhsVLl5FWxoeeutI2nmi3YNPyJ5A';
-        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
+        let sb = null;
         let currentUser = null;
+
+        /* Init Supabase dès que le SDK est chargé */
+        function initSupabase() {
+            try {
+                sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+                initAuth();
+            } catch(e) {
+                console.error('Supabase init error:', e);
+            }
+        }
 
         /* === INIT AUTH === */
         async function initAuth() {
+            if (!sb) return;
             const { data: { session } } = await sb.auth.getSession();
             if (session) {
                 currentUser = session.user;
@@ -3085,6 +3095,10 @@
         }
 
         function showEspaceClient() {
+            if (!sb) {
+                alert('Chargement en cours, réessayez dans un instant.');
+                return;
+            }
             if (currentUser) {
                 showPage('dashboard');
                 loadDashboard();
@@ -3257,7 +3271,12 @@
             loadDashboard();
         }
 
-        initAuth();
+        /* Lancer Supabase après chargement complet du SDK */
+        if (typeof supabase !== 'undefined') {
+            initSupabase();
+        } else {
+            document.querySelector('script[src*="supabase"]').addEventListener('load', initSupabase);
+        }
     </script>
 </body>
 </html>
