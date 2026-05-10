@@ -2905,7 +2905,7 @@
         setTimeout(showEmailPopup, 35000);
 
     <!-- SUPABASE SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
     <!-- PAGE CONNEXION -->
     <main id="auth-page" class="page-content pt-32 pb-24 px-6 min-h-screen bg-slate-50">
@@ -3068,7 +3068,7 @@
         /* Init Supabase dès que le SDK est chargé */
         function initSupabase() {
             try {
-                sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+                sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
                 initAuth();
             } catch(e) {
                 console.error('Supabase init error:', e);
@@ -3096,7 +3096,7 @@
 
         function showEspaceClient() {
             if (!sb) {
-                alert('Chargement en cours, réessayez dans un instant.');
+                showPage('auth');
                 return;
             }
             if (currentUser) {
@@ -3272,11 +3272,17 @@
         }
 
         /* Lancer Supabase après chargement complet du SDK */
-        if (typeof supabase !== 'undefined') {
-            initSupabase();
-        } else {
-            document.querySelector('script[src*="supabase"]').addEventListener('load', initSupabase);
+        function tryInitSupabase(attempts) {
+            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+                initAuth();
+            } else if (attempts > 0) {
+                setTimeout(() => tryInitSupabase(attempts - 1), 300);
+            } else {
+                console.error('Supabase SDK non chargé');
+            }
         }
+        window.addEventListener('load', () => tryInitSupabase(10));
     </script>
 </body>
 </html>
