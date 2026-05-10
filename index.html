@@ -2932,15 +2932,12 @@
             if (!page) return;
             page.classList.add('page-active');
             window.scrollTo(0, 0);
-            // Nav active indicator
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-link-active'));
             const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
             if (active) active.classList.add('nav-link-active');
-            // Update URL hash without scroll
             history.pushState(null, '', '#' + pageId);
         }
 
-        // Hash routing — charge la bonne page au chargement et au retour navigateur
         function routeFromHash() {
             const hash = window.location.hash.replace('#', '') || 'home';
             const validPages = ['home','portfolio','evenements','tarifs','apropos','contact','parrainage','auth','dashboard'];
@@ -2951,11 +2948,13 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-link-active'));
             const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
             if (active) active.classList.add('nav-link-active');
-            if (pageId === 'dashboard') loadDashboard();
+            window.scrollTo(0, 0);
+            if (pageId === 'dashboard' && typeof loadDashboard === 'function') loadDashboard();
         }
 
         window.addEventListener('popstate', routeFromHash);
-        window.addEventListener('DOMContentLoaded', routeFromHash);
+        // Appel direct — le script est en bas du body, le DOM est déjà prêt
+        routeFromHash();
         
         function toggleMenu() {
             document.getElementById('mobile-menu').classList.toggle('active');
