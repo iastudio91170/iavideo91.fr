@@ -1024,6 +1024,9 @@
                 <a href="tel:0749518336" class="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-blue-600 transition-all flex items-center gap-2">
                     07.49.51.83.36
                 </a>
+                <button onclick="showEspaceClient()" id="nav-espace-btn" class="bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition-all flex items-center gap-2 font-black text-xs uppercase tracking-widest">
+                    <i class="fas fa-user"></i> <span id="nav-espace-label">Mon Espace</span>
+                </button>
                 <!-- Toggle mode sombre -->
                 <div class="flex items-center gap-2" title="Mode sombre">
                     <i class="fas fa-moon text-slate-400 text-xs"></i>
@@ -2901,14 +2904,360 @@
         }
         setTimeout(showEmailPopup, 35000);
 
-        /* === PARRAINAGE SHARE === */
-        function shareParrainage() {
-            if (navigator.share) {
-                navigator.share({ title: 'IAViDEO-91 — Bandes-annonces IA', text: 'Découvrez IAViDEO-91 : des bandes-annonces cinéma à partir d\'une photo !', url: 'https://iavideo91.fr' });
+    <!-- SUPABASE SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- PAGE CONNEXION -->
+    <main id="auth-page" class="page-content pt-32 pb-24 px-6 min-h-screen bg-slate-50">
+        <div class="max-w-md mx-auto">
+            <div class="text-center mb-10">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-200">
+                    <i class="fas fa-film text-white text-2xl"></i>
+                </div>
+                <h1 class="text-3xl font-black uppercase tracking-tight mb-2">Mon Espace</h1>
+                <p class="text-slate-500 text-sm">Accédez à vos commandes et fichiers</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex bg-slate-100 rounded-2xl p-1 mb-8">
+                <button onclick="switchAuthTab('login')" id="tab-login" class="flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl bg-white shadow-sm text-slate-900 transition-all">Connexion</button>
+                <button onclick="switchAuthTab('register')" id="tab-register" class="flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl text-slate-400 transition-all">Inscription</button>
+            </div>
+
+            <!-- Formulaire Connexion -->
+            <div id="form-login" class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100 space-y-4">
+                <input id="login-email" type="email" placeholder="Email" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                <input id="login-password" type="password" placeholder="Mot de passe" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                <button onclick="handleLogin()" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-[1.02] transition-transform shadow-lg shadow-blue-200">
+                    Se connecter
+                </button>
+                <p id="login-error" class="text-red-500 text-xs text-center font-bold hidden"></p>
+            </div>
+
+            <!-- Formulaire Inscription -->
+            <div id="form-register" class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100 space-y-4 hidden">
+                <div class="grid grid-cols-2 gap-3">
+                    <input id="reg-prenom" type="text" placeholder="Prénom" class="bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                    <input id="reg-nom" type="text" placeholder="Nom" class="bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                </div>
+                <input id="reg-email" type="email" placeholder="Email" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                <input id="reg-tel" type="tel" placeholder="Téléphone (optionnel)" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                <input id="reg-password" type="password" placeholder="Mot de passe (min. 6 caractères)" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                <button onclick="handleRegister()" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-[1.02] transition-transform shadow-lg shadow-blue-200">
+                    Créer mon compte
+                </button>
+                <p id="register-error" class="text-red-500 text-xs text-center font-bold hidden"></p>
+                <p id="register-success" class="text-green-600 text-xs text-center font-bold hidden">✓ Compte créé ! Vérifiez votre email pour confirmer.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE DASHBOARD -->
+    <main id="dashboard-page" class="page-content pb-24 min-h-screen bg-slate-50">
+        <div class="pt-32 px-6">
+            <div class="max-w-5xl mx-auto">
+
+                <!-- Header dashboard -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+                    <div>
+                        <p class="text-blue-600 font-black text-xs uppercase tracking-[0.2em] mb-1">Tableau de bord</p>
+                        <h1 class="text-3xl font-black tracking-tighter uppercase">Bonjour, <span id="dash-prenom" class="text-blue-600">—</span> 👋</h1>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="showPage('contact')" class="px-5 py-3 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                            <i class="fas fa-plus mr-2"></i>Nouvelle commande
+                        </button>
+                        <button onclick="handleLogout()" class="px-5 py-3 bg-slate-200 text-slate-700 font-black rounded-2xl text-xs uppercase tracking-widest hover:bg-slate-300 transition">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Déconnexion
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats rapides -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
+                        <div id="dash-total-commandes" class="text-3xl font-black text-blue-600 mb-1">0</div>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Commandes</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
+                        <div id="dash-en-cours" class="text-3xl font-black text-orange-500 mb-1">0</div>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">En cours</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
+                        <div id="dash-livrees" class="text-3xl font-black text-green-500 mb-1">0</div>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Livrées</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
+                        <div id="dash-fichiers" class="text-3xl font-black text-slate-700 mb-1">0</div>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Fichiers</p>
+                    </div>
+                </div>
+
+                <!-- Mes commandes -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 mb-8">
+                    <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                        <h2 class="font-black text-lg uppercase tracking-tight">Mes commandes</h2>
+                    </div>
+                    <div id="dash-commandes-list" class="p-6">
+                        <div class="text-center py-8 text-slate-400">
+                            <i class="fas fa-film text-4xl mb-3 block opacity-30"></i>
+                            <p class="font-bold text-sm">Aucune commande pour l'instant</p>
+                            <button onclick="showPage('contact')" class="mt-4 px-6 py-2 bg-blue-600 text-white font-black rounded-xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">Commander</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload fichiers -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 mb-8">
+                    <div class="p-6 border-b border-slate-100">
+                        <h2 class="font-black text-lg uppercase tracking-tight">Mes fichiers</h2>
+                        <p class="text-slate-400 text-sm mt-1">Uploadez vos photos pour vos projets</p>
+                    </div>
+                    <div class="p-6">
+                        <label class="block w-full border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all group">
+                            <input type="file" id="file-upload" accept="image/*,video/*" multiple class="hidden" onchange="handleFileUpload(this)">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-slate-300 group-hover:text-blue-400 transition-colors mb-3 block"></i>
+                            <p class="font-black text-sm uppercase tracking-widest text-slate-500 group-hover:text-blue-600">Cliquez ou déposez vos fichiers</p>
+                            <p class="text-slate-400 text-xs mt-1">Photos, vidéos — max 50MB par fichier</p>
+                        </label>
+                        <div id="upload-progress" class="hidden mt-4">
+                            <div class="bg-slate-100 rounded-full h-2"><div id="upload-bar" class="bg-blue-600 h-2 rounded-full transition-all" style="width:0%"></div></div>
+                            <p id="upload-status" class="text-xs text-slate-500 mt-2 text-center font-bold"></p>
+                        </div>
+                        <div id="dash-fichiers-list" class="mt-6 space-y-3"></div>
+                    </div>
+                </div>
+
+                <!-- Profil -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100">
+                    <div class="p-6 border-b border-slate-100">
+                        <h2 class="font-black text-lg uppercase tracking-tight">Mon profil</h2>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2 block">Prénom</label>
+                                <input id="profil-prenom" type="text" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2 block">Nom</label>
+                                <input id="profil-nom" type="text" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2 block">Téléphone</label>
+                            <input id="profil-tel" type="tel" class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all text-sm">
+                        </div>
+                        <button onclick="saveProfil()" class="px-8 py-3 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                            Sauvegarder
+                        </button>
+                        <p id="profil-success" class="text-green-600 text-xs font-bold hidden">✓ Profil mis à jour !</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        /* === SUPABASE INIT === */
+        const SUPABASE_URL = 'https://dbxoacwdalvuqlmamIgu.supabase.co';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRieG9hY3dkYWx2dXFsbWFtaWd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjE5NjMsImV4cCI6MjA5MzkzNzk2M30.Pu2CrsyhRdC9W7pKhsVLl5FWxoeeutI2nmi3YNPyJ5A';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+        let currentUser = null;
+
+        /* === INIT AUTH === */
+        async function initAuth() {
+            const { data: { session } } = await sb.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                updateNavForUser(true);
+            }
+            sb.auth.onAuthStateChange((_event, session) => {
+                currentUser = session?.user || null;
+                updateNavForUser(!!session);
+            });
+        }
+
+        function updateNavForUser(loggedIn) {
+            const label = document.getElementById('nav-espace-label');
+            if (label) label.textContent = loggedIn ? 'Mon Espace' : 'Connexion';
+        }
+
+        function showEspaceClient() {
+            if (currentUser) {
+                showPage('dashboard');
+                loadDashboard();
             } else {
-                navigator.clipboard.writeText('https://iavideo91.fr').then(() => alert('Lien copié !'));
+                showPage('auth');
             }
         }
+
+        /* === AUTH TABS === */
+        function switchAuthTab(tab) {
+            const isLogin = tab === 'login';
+            document.getElementById('form-login').classList.toggle('hidden', !isLogin);
+            document.getElementById('form-register').classList.toggle('hidden', isLogin);
+            document.getElementById('tab-login').className = isLogin
+                ? 'flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl bg-white shadow-sm text-slate-900 transition-all'
+                : 'flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl text-slate-400 transition-all';
+            document.getElementById('tab-register').className = !isLogin
+                ? 'flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl bg-white shadow-sm text-slate-900 transition-all'
+                : 'flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl text-slate-400 transition-all';
+        }
+
+        /* === LOGIN === */
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const err = document.getElementById('login-error');
+            err.classList.add('hidden');
+            const { error } = await sb.auth.signInWithPassword({ email, password });
+            if (error) {
+                err.textContent = 'Email ou mot de passe incorrect';
+                err.classList.remove('hidden');
+            } else {
+                showPage('dashboard');
+                loadDashboard();
+            }
+        }
+
+        /* === REGISTER === */
+        async function handleRegister() {
+            const prenom = document.getElementById('reg-prenom').value;
+            const nom = document.getElementById('reg-nom').value;
+            const email = document.getElementById('reg-email').value;
+            const tel = document.getElementById('reg-tel').value;
+            const password = document.getElementById('reg-password').value;
+            const err = document.getElementById('register-error');
+            const ok = document.getElementById('register-success');
+            err.classList.add('hidden'); ok.classList.add('hidden');
+
+            const { data, error } = await sb.auth.signUp({ email, password });
+            if (error) {
+                err.textContent = error.message;
+                err.classList.remove('hidden');
+                return;
+            }
+            if (data.user) {
+                await sb.from('profiles').insert({ id: data.user.id, prenom, nom, telephone: tel });
+            }
+            ok.classList.remove('hidden');
+        }
+
+        /* === LOGOUT === */
+        async function handleLogout() {
+            await sb.auth.signOut();
+            showPage('home');
+        }
+
+        /* === LOAD DASHBOARD === */
+        async function loadDashboard() {
+            if (!currentUser) return;
+
+            // Profil
+            const { data: profil } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+            if (profil) {
+                document.getElementById('dash-prenom').textContent = profil.prenom || 'Client';
+                document.getElementById('profil-prenom').value = profil.prenom || '';
+                document.getElementById('profil-nom').value = profil.nom || '';
+                document.getElementById('profil-tel').value = profil.telephone || '';
+            }
+
+            // Commandes
+            const { data: commandes } = await sb.from('commandes').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            const total = commandes?.length || 0;
+            const enCours = commandes?.filter(c => c.statut === 'en_cours').length || 0;
+            const livrees = commandes?.filter(c => c.statut === 'livree').length || 0;
+            document.getElementById('dash-total-commandes').textContent = total;
+            document.getElementById('dash-en-cours').textContent = enCours;
+            document.getElementById('dash-livrees').textContent = livrees;
+
+            const list = document.getElementById('dash-commandes-list');
+            if (commandes && commandes.length > 0) {
+                const statusColors = { en_attente: 'bg-yellow-100 text-yellow-700', en_cours: 'bg-blue-100 text-blue-700', livree: 'bg-green-100 text-green-700' };
+                const statusLabels = { en_attente: 'En attente', en_cours: 'En cours', livree: 'Livrée' };
+                list.innerHTML = commandes.map(c => `
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl mb-3">
+                        <div>
+                            <p class="font-black text-sm">${c.type_projet || 'Projet IA'}</p>
+                            <p class="text-slate-400 text-xs mt-0.5">${new Date(c.created_at).toLocaleDateString('fr-FR')}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            ${c.prix ? `<span class="font-black text-sm">${c.prix}€</span>` : ''}
+                            <span class="px-3 py-1 rounded-full text-xs font-black ${statusColors[c.statut] || 'bg-slate-100 text-slate-600'}">${statusLabels[c.statut] || c.statut}</span>
+                        </div>
+                    </div>`).join('');
+            }
+
+            // Fichiers
+            const { data: fichiers } = await sb.from('fichiers').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            document.getElementById('dash-fichiers').textContent = fichiers?.length || 0;
+            const flist = document.getElementById('dash-fichiers-list');
+            if (fichiers && fichiers.length > 0) {
+                flist.innerHTML = fichiers.map(f => `
+                    <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                        <i class="fas fa-file-image text-blue-400 text-lg"></i>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-bold text-sm truncate">${f.nom_fichier}</p>
+                            <p class="text-slate-400 text-xs">${new Date(f.created_at).toLocaleDateString('fr-FR')}</p>
+                        </div>
+                    </div>`).join('');
+            }
+        }
+
+        /* === SAVE PROFIL === */
+        async function saveProfil() {
+            if (!currentUser) return;
+            await sb.from('profiles').upsert({
+                id: currentUser.id,
+                prenom: document.getElementById('profil-prenom').value,
+                nom: document.getElementById('profil-nom').value,
+                telephone: document.getElementById('profil-tel').value
+            });
+            const ok = document.getElementById('profil-success');
+            ok.classList.remove('hidden');
+            setTimeout(() => ok.classList.add('hidden'), 3000);
+            document.getElementById('dash-prenom').textContent = document.getElementById('profil-prenom').value;
+        }
+
+        /* === UPLOAD FICHIERS === */
+        async function handleFileUpload(input) {
+            if (!currentUser) return;
+            const files = Array.from(input.files);
+            const progress = document.getElementById('upload-progress');
+            const bar = document.getElementById('upload-bar');
+            const status = document.getElementById('upload-status');
+            progress.classList.remove('hidden');
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const pct = Math.round(((i) / files.length) * 100);
+                bar.style.width = pct + '%';
+                status.textContent = `Upload ${i + 1}/${files.length} — ${file.name}`;
+
+                const path = `${currentUser.id}/${Date.now()}_${file.name}`;
+                const { data, error } = await sb.storage.from('fichiers-clients').upload(path, file);
+
+                if (!error) {
+                    const { data: urlData } = sb.storage.from('fichiers-clients').getPublicUrl(path);
+                    await sb.from('fichiers').insert({
+                        user_id: currentUser.id,
+                        nom_fichier: file.name,
+                        url: urlData.publicUrl,
+                        type: file.type,
+                        taille: file.size
+                    });
+                }
+            }
+
+            bar.style.width = '100%';
+            status.textContent = '✓ Upload terminé !';
+            setTimeout(() => { progress.classList.add('hidden'); bar.style.width = '0%'; }, 2500);
+            loadDashboard();
+        }
+
+        initAuth();
     </script>
 </body>
 </html>
