@@ -2928,13 +2928,34 @@
     <script>
         function showPage(pageId) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
-            document.getElementById(pageId + '-page').classList.add('page-active');
+            const page = document.getElementById(pageId + '-page');
+            if (!page) return;
+            page.classList.add('page-active');
             window.scrollTo(0, 0);
             // Nav active indicator
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-link-active'));
             const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
             if (active) active.classList.add('nav-link-active');
+            // Update URL hash without scroll
+            history.pushState(null, '', '#' + pageId);
         }
+
+        // Hash routing — charge la bonne page au chargement et au retour navigateur
+        function routeFromHash() {
+            const hash = window.location.hash.replace('#', '') || 'home';
+            const validPages = ['home','portfolio','evenements','tarifs','apropos','contact','parrainage','auth','dashboard'];
+            const pageId = validPages.includes(hash) ? hash : 'home';
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
+            const page = document.getElementById(pageId + '-page');
+            if (page) page.classList.add('page-active');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-link-active'));
+            const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+            if (active) active.classList.add('nav-link-active');
+            if (pageId === 'dashboard') loadDashboard();
+        }
+
+        window.addEventListener('popstate', routeFromHash);
+        window.addEventListener('DOMContentLoaded', routeFromHash);
         
         function toggleMenu() {
             document.getElementById('mobile-menu').classList.toggle('active');
