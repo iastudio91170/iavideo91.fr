@@ -2020,46 +2020,148 @@
             </div>
         </section>
     </main>
-    <main id="contact-page" class="page-content pt-32 pb-24 px-6">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-5xl font-black uppercase italic mb-12 tracking-tighter">Contact</h2>
-            <div class="grid md:grid-cols-2 gap-12 text-left">
-                <div class="space-y-6">
-                    <div class="bg-blue-50 p-8 rounded-[2rem]">
-                        <p class="text-blue-600 font-black uppercase text-xs mb-2 tracking-widest">WhatsApp / Tel</p>
-                        <a href="tel:0749518336" class="text-2xl font-black tracking-tighter">07.49.51.83.36</a>
-                        <br>
-                        <button id="copy-phone-btn" onclick="copyPhone()">
+    <main id="contact-page" class="page-content pb-24 px-6" style="padding-top:120px;">
+        <div class="max-w-5xl mx-auto">
+
+            <!-- Header -->
+            <div class="text-center mb-14">
+                <span class="text-blue-600 font-black text-xs uppercase tracking-[0.2em] mb-4 block">Commencer un projet</span>
+                <h2 class="text-5xl md:text-6xl font-black uppercase italic tracking-tighter mb-4">Construisons<br><span class="text-blue-600">votre film.</span></h2>
+                <p class="text-slate-500 max-w-xl mx-auto leading-relaxed">Remplissez le formulaire — vos choix composent automatiquement votre message.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10">
+
+                <!-- Colonne gauche — Contact -->
+                <div class="space-y-5">
+                    <div class="bg-blue-50 rounded-[1.5rem] p-6">
+                        <p class="text-blue-600 font-black text-xs uppercase tracking-widest mb-1">WhatsApp / Tél</p>
+                        <a href="tel:0749518336" class="text-2xl font-black tracking-tighter">07.49.51.83.36</a><br>
+                        <button id="copy-phone-btn" onclick="copyPhone()" class="mt-1">
                             <i class="fas fa-copy"></i> <span id="copy-phone-label">Copier le numéro</span>
                         </button>
                     </div>
-                    <div class="bg-slate-50 p-8 rounded-[2rem]">
-                        <p class="text-slate-400 font-black uppercase text-xs mb-2 tracking-widest">Email</p>
-                        <p class="text-sm font-bold italic">andre.c@iavideo91.fr</p>
+                    <div class="bg-slate-50 rounded-[1.5rem] p-6">
+                        <p class="text-slate-400 font-black text-xs uppercase tracking-widest mb-1">Email</p>
+                        <p class="text-sm font-bold">andre.c@iavideo91.fr</p>
+                    </div>
+
+                    <!-- Aperçu du message généré -->
+                    <div id="msg-preview" class="bg-slate-900 text-white rounded-[1.5rem] p-6 hidden">
+                        <p class="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">
+                            <i class="fas fa-magic mr-1"></i> Message généré
+                        </p>
+                        <p id="msg-preview-text" class="text-slate-300 text-sm leading-relaxed italic"></p>
+                    </div>
+
+                    <!-- Carte Google Maps -->
+                    <div class="rounded-[1.5rem] overflow-hidden shadow-sm border border-slate-100">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d84000!2d2.3988!3d48.68!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5d7b2a6e2e1b7%3A0x40b82c3688c3e30!2sViry-Ch%C3%A2tillon!5e0!3m2!1sfr!2sfr!4v1699000000000" width="100%" height="200" style="border:0;display:block;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                 </div>
-                <div id="form-success">
-                    <div class="success-icon"><i class="fas fa-check"></i></div>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-slate-900">Message envoyé !</h3>
-                    <p class="text-slate-600 text-sm">André-Marc vous répondra très rapidement. Vous pouvez aussi le joindre directement au <span class="text-blue-600 font-bold">07.49.51.83.36</span>.</p>
-                </div>
-                <form id="contact-form" class="space-y-4">
-                    <input type="text" name="name" placeholder="Nom" required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all">
-                    <input type="email" name="_replyto" placeholder="Email" required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-200 transition-all">
-                    <textarea id="contact-message" name="message" rows="4" placeholder="Votre projet..." required class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none resize-none border-2 border-transparent focus:border-blue-200 transition-all"></textarea>
-                    <button type="submit" id="form-submit-btn" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase shadow-lg shadow-blue-200 hover:scale-[1.02] transition-transform">Envoyer</button>
-                </form>
-            </div>
 
-            <!-- CARTE GOOGLE MAPS -->
-            <div class="mt-16">
-                <p class="text-slate-400 font-black text-xs uppercase tracking-widest mb-4 text-center">Zones de service</p>
-                <div class="rounded-[2rem] overflow-hidden shadow-xl border border-slate-100">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d84000!2d2.3988!3d48.68!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5d7b2a6e2e1b7%3A0x40b82c3688c3e30!2sViry-Ch%C3%A2tillon!5e0!3m2!1sfr!2sfr!4v1699000000000" width="100%" height="300" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-                <div class="flex justify-center gap-6 mt-4 flex-wrap">
-                    <div class="flex items-center gap-2 text-sm font-bold text-slate-600"><span class="w-3 h-3 bg-blue-600 rounded-full inline-block"></span>Viry-Chatillon (91170)</div>
-                    <div class="flex items-center gap-2 text-sm font-bold text-slate-600"><span class="w-3 h-3 bg-blue-400 rounded-full inline-block"></span>Pantin (93500)</div>
+                <!-- Colonne droite — Formulaire intelligent -->
+                <div>
+                    <div id="form-success">
+                        <div class="success-icon"><i class="fas fa-check"></i></div>
+                        <h3 class="text-xl font-black uppercase tracking-tight text-slate-900">Message envoyé !</h3>
+                        <p class="text-slate-600 text-sm">André-Marc vous répondra très rapidement. Vous pouvez aussi le joindre au <span class="text-blue-600 font-bold">07.49.51.83.36</span>.</p>
+                    </div>
+
+                    <form id="contact-form" class="space-y-4" onchange="buildContactMessage()">
+
+                        <!-- Nom -->
+                        <input type="text" name="name" placeholder="Votre nom *" required
+                            class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-300 transition-all text-sm">
+
+                        <!-- Email -->
+                        <input type="email" name="_replyto" placeholder="Votre email *" required
+                            class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-300 transition-all text-sm">
+
+                        <!-- Type de projet -->
+                        <div class="relative">
+                            <select id="sel-projet" name="projet" onchange="buildContactMessage()"
+                                class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-300 transition-all text-sm appearance-none cursor-pointer pr-10 text-slate-500">
+                                <option value="">🎬 Quel est votre projet ? *</option>
+                                <option value="mariage">💍 Mariage & Union</option>
+                                <option value="passage">🌟 Passage à l'âge adulte (18 ans, communion, bar mitzva…)</option>
+                                <option value="anniversaire">🎉 Fête & Anniversaire surprise</option>
+                                <option value="hommage">🕊️ Hommage & Mémoire</option>
+                                <option value="pro">💼 Événementiel Professionnel</option>
+                                <option value="retouche">✨ Retouche Photo IA</option>
+                                <option value="autre">🎥 Autre projet</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                        </div>
+
+                        <!-- Genre / Ambiance -->
+                        <div class="relative">
+                            <select id="sel-genre" name="genre" onchange="buildContactMessage()"
+                                class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-300 transition-all text-sm appearance-none cursor-pointer pr-10 text-slate-500">
+                                <option value="">🎭 Quelle ambiance vous inspire ?</option>
+                                <optgroup label="Émotions">
+                                    <option value="Romance et émotion">❤️ Romance & Émotion</option>
+                                    <option value="Nostalgie et tendresse">🥹 Nostalgie & Tendresse</option>
+                                    <option value="Joie et célébration">🎊 Joie & Célébration</option>
+                                </optgroup>
+                                <optgroup label="Cinéma">
+                                    <option value="Action épique style Marvel">⚡ Action épique — style Marvel</option>
+                                    <option value="Thriller mystérieux">🌑 Thriller & Mystère</option>
+                                    <option value="Science-Fiction futuriste">🚀 Science-Fiction</option>
+                                    <option value="Fantastique et magie">🧙 Fantastique & Magie</option>
+                                    <option value="Horreur et suspense">👻 Horreur & Suspense</option>
+                                    <option value="Aventure cinématographique">🗺️ Aventure</option>
+                                    <option value="Comédie légère">😄 Comédie</option>
+                                    <option value="Documentaire authentique">🎥 Documentaire</option>
+                                </optgroup>
+                                <optgroup label="Style">
+                                    <option value="Épique et grandiose">🏆 Épique & Grandiose</option>
+                                    <option value="Élégant et raffiné">✨ Élégant & Raffiné</option>
+                                    <option value="Brut et authentique">💪 Brut & Authentique</option>
+                                </optgroup>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                        </div>
+
+                        <!-- Budget -->
+                        <div class="relative">
+                            <select id="sel-budget" name="budget" onchange="buildContactMessage()"
+                                class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-300 transition-all text-sm appearance-none cursor-pointer pr-10 text-slate-500">
+                                <option value="">💶 Quel est votre budget ?</option>
+                                <option value="Pack Découverte (5,99€)">Pack Découverte — 5,99€</option>
+                                <option value="Pack Standard (10€)">Pack Standard — 10€</option>
+                                <option value="Pack Cinéma (15€)">Pack Cinéma — 15€</option>
+                                <option value="Pack Blockbuster (24,99€)">Pack Blockbuster — 24,99€</option>
+                                <option value="budget à définir ensemble">À définir ensemble</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                        </div>
+
+                        <!-- Délai -->
+                        <div class="relative">
+                            <select id="sel-delai" name="delai" onchange="buildContactMessage()"
+                                class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-300 transition-all text-sm appearance-none cursor-pointer pr-10 text-slate-500">
+                                <option value="">⏱️ Quel délai souhaitez-vous ?</option>
+                                <option value="le plus vite possible (sous 48h)">Le plus vite possible — sous 48h</option>
+                                <option value="cette semaine">Cette semaine</option>
+                                <option value="ce mois-ci">Ce mois-ci</option>
+                                <option value="à définir">Pas de contrainte de délai</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                        </div>
+
+                        <!-- Message auto + précisions -->
+                        <textarea id="contact-message" name="message" rows="5"
+                            placeholder="Votre message sera composé automatiquement selon vos choix. Vous pouvez ajouter des précisions ici..."
+                            class="w-full bg-slate-50 rounded-2xl p-4 font-bold outline-none resize-none border-2 border-transparent focus:border-blue-300 transition-all text-sm"></textarea>
+
+                        <button type="submit" id="form-submit-btn"
+                            class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase text-sm tracking-widest shadow-lg shadow-blue-200 hover:scale-[1.02] transition-transform">
+                            <i class="fas fa-paper-plane mr-2"></i> Envoyer ma demande
+                        </button>
+
+                        <p class="text-slate-400 text-xs text-center">Paiement uniquement à la livraison · Réponse sous 1h</p>
+                    </form>
                 </div>
             </div>
         </div>
@@ -3294,6 +3396,36 @@
                     if (btn) { btn.innerHTML = '<i class="fas fa-check"></i>'; setTimeout(() => btn.innerHTML = '<i class="fas fa-share-nodes"></i>', 1500); }
                 });
             }
+        }
+
+        /* === CONTACT FORMULAIRE INTELLIGENT === */
+        function buildContactMessage() {
+            const projet = document.getElementById('sel-projet')?.value || '';
+            const genre = document.getElementById('sel-genre')?.value || '';
+            const budget = document.getElementById('sel-budget')?.value || '';
+            const delai = document.getElementById('sel-delai')?.value || '';
+
+            const projetLabels = {
+                mariage: 'un mariage', passage: "une fête de passage à l'âge adulte",
+                anniversaire: 'un anniversaire surprise', hommage: 'un hommage à un proche',
+                pro: 'un événement professionnel', retouche: 'une retouche photo IA', autre: 'un projet'
+            };
+
+            if (!projet) { document.getElementById('contact-message').value = ''; document.getElementById('msg-preview').classList.add('hidden'); return; }
+
+            let msg = `Bonjour André-Marc !\n\nJe souhaite créer une vidéo IA pour ${projetLabels[projet] || 'mon projet'}.`;
+            if (genre) msg += `\n🎭 Ambiance souhaitée : ${genre}.`;
+            if (budget) msg += `\n💶 Budget : ${budget}.`;
+            if (delai) msg += `\n⏱️ Délai souhaité : ${delai}.`;
+            msg += `\n\nJe suis prêt(e) à vous envoyer mes photos. Paiement à la livraison.`;
+
+            const textarea = document.getElementById('contact-message');
+            textarea.value = msg;
+
+            const preview = document.getElementById('msg-preview');
+            const previewText = document.getElementById('msg-preview-text');
+            preview.classList.remove('hidden');
+            previewText.textContent = msg;
         }
 
         /* === COPIER NUMÉRO === */
