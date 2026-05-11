@@ -99,6 +99,127 @@
         /* === OFFSET NAV FIXE === */
         .page-content { scroll-margin-top: 120px; }
 
+        /* === DÉMO DASHBOARD === */
+        let dashPhotoBase64 = null;
+        let dashSelectedStyle = null;
+
+        function showDemoFromDashboard() {
+            const section = document.getElementById('dash-demo-section');
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+            toggleDashDemo(true);
+        }
+
+        function toggleDashDemo(forceOpen) {
+            const form = document.getElementById('dash-demo-form');
+            const used = document.getElementById('dash-demo-used');
+            const icon = document.getElementById('dash-demo-toggle').querySelector('i');
+            if (!form) return;
+            const isHidden = form.classList.contains('hidden') && used.classList.contains('hidden');
+            if (forceOpen || isHidden) {
+                checkDemoUsedDash();
+                if (icon) icon.className = 'fas fa-chevron-up';
+            } else {
+                form.classList.add('hidden');
+                used.classList.add('hidden');
+                if (icon) icon.className = 'fas fa-chevron-down';
+            }
+        }
+
+        async function checkDemoUsedDash() {
+            if (!currentUser || !sb) return;
+            const { data } = await sb.from('profiles').select('generation_utilisee').eq('id', currentUser.id).single();
+            if (data?.generation_utilisee) {
+                document.getElementById('dash-demo-form').classList.add('hidden');
+                document.getElementById('dash-demo-used').classList.remove('hidden');
+            } else {
+                document.getElementById('dash-demo-form').classList.remove('hidden');
+                document.getElementById('dash-demo-used').classList.add('hidden');
+            }
+        }
+
+        function handleDemoPhotoUpload2(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                dashPhotoBase64 = e.target.result.split(',')[1];
+                document.getElementById('dash-preview-img').src = e.target.result;
+                document.getElementById('dash-photo-preview').classList.remove('hidden');
+                document.getElementById('dash-upload-label').style.display = 'none';
+                updateDashBtn();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function selectDemoStyle2(el, style) {
+            document.querySelectorAll('.dash-style-card').forEach(c => {
+                c.classList.remove('border-blue-500', 'bg-blue-900/30');
+                c.classList.add('border-slate-700');
+            });
+            el.classList.add('border-blue-500', 'bg-blue-900/30');
+            el.classList.remove('border-slate-700');
+            dashSelectedStyle = style;
+            updateDashBtn();
+        }
+
+        function updateDashBtn() {
+            const btn = document.getElementById('dash-generate-btn');
+            if (!btn) return;
+            if (dashPhotoBase64 && dashSelectedStyle) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        async function generateDemoImage2() {
+            if (!currentUser || !dashPhotoBase64 || !dashSelectedStyle) return;
+            const btn = document.getElementById('dash-generate-btn');
+            btn.disabled = true;
+            btn.textContent = 'Génération...';
+            document.getElementById('dash-placeholder').classList.add('hidden');
+            document.getElementById('dash-loading').classList.remove('hidden');
+            document.getElementById('dash-result-wrap').classList.add('hidden');
+
+            try {
+                const imgResponse = await fetch('https://api.x.ai/v1/images/generations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROK_API_KEY}` },
+                    body: JSON.stringify({
+                        model: 'aurora',
+                        prompt: demoStylePrompts[dashSelectedStyle],
+                        n: 1,
+                        size: '1024x1024',
+                        response_format: 'b64_json'
+                    })
+                });
+
+                if (!imgResponse.ok) throw new Error(`Erreur API: ${imgResponse.status}`);
+                const imgData = await imgResponse.json();
+                const b64 = imgData.data?.[0]?.b64_json;
+                const url = imgData.data?.[0]?.url;
+                const imgSrc = b64 ? `data:image/png;base64,${b64}` : url;
+                if (!imgSrc) throw new Error('Aucune image retournée');
+
+                document.getElementById('dash-loading').classList.add('hidden');
+                document.getElementById('dash-result-wrap').classList.remove('hidden');
+                document.getElementById('dash-result-img').src = imgSrc;
+                document.getElementById('dash-cta').classList.remove('hidden');
+                btn.textContent = '✓ Générée !';
+
+                await sb.from('profiles').update({ generation_utilisee: true }).eq('id', currentUser.id);
+                // Update home demo UI too
+                document.getElementById('demo-form')?.classList.add('hidden');
+                document.getElementById('demo-used')?.classList.remove('hidden');
+
+            } catch (err) {
+                document.getElementById('dash-loading').classList.add('hidden');
+                document.getElementById('dash-placeholder').classList.remove('hidden');
+                document.getElementById('dash-placeholder').innerHTML = `<p class="text-red-400 font-black text-sm">Erreur : ${err.message}</p>`;
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-wand-magic-sparkles mr-2"></i> Réessayer';
+            }
+        }
+
         /* === DÉMO IA GROK === */
         const GROK_API_KEY = 'xai-49efNAWO4CdJJkRpvIJ8HHx6fClWOSXg95kRDGDkFYw1x7opwfWavZKUmLAyBaplOMBIV8KmwQVgxgNl';
         let demoPhotoBase64 = null;
@@ -1273,9 +1394,9 @@
 
                 <!-- Titre glitch -->
                 <div class="mb-6" style="max-width:900px;">
-                    <h1 id="hero-title" class="font-black uppercase" style="font-size:clamp(3rem,9vw,8rem);line-height:0.88;letter-spacing:-0.03em;color:#0f172a;">
+                    <h1 id="hero-title" class="font-black uppercase" style="font-size:clamp(3rem,9vw,8rem);line-height:1;letter-spacing:-0.03em;color:#0f172a;overflow:visible;padding-bottom:0.1em;">
                         VOTRE VISION<br>
-                        <span id="glitch-text" class="gradient-text italic" style="position:relative;display:inline-block;">
+                        <span id="glitch-text" class="gradient-text italic" style="position:relative;display:inline-block;overflow:visible;">
                             DEVIENT RÉALITÉ.
                         </span>
                     </h1>
@@ -2908,6 +3029,9 @@
                         <button onclick="showPage('contact')" class="px-5 py-3 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">
                             <i class="fas fa-plus mr-2"></i>Nouvelle commande
                         </button>
+                        <button onclick="showDemoFromDashboard()" class="px-5 py-3 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                            <i class="fas fa-wand-magic-sparkles mr-2"></i>Essai IA Gratuit
+                        </button>
                         <button onclick="handleLogout()" class="px-5 py-3 bg-slate-200 text-slate-700 font-black rounded-2xl text-xs uppercase tracking-widest hover:bg-slate-300 transition">
                             <i class="fas fa-sign-out-alt mr-1"></i> Déconnexion
                         </button>
@@ -2931,6 +3055,95 @@
                     <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
                         <div id="dash-fichiers" class="text-3xl font-black text-slate-700 mb-1">0</div>
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Fichiers</p>
+                    </div>
+                </div>
+
+                <!-- Démo IA dans le dashboard -->
+                <div id="dash-demo-section" class="bg-slate-900 rounded-[2rem] mb-8 overflow-hidden">
+                    <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                        <div>
+                            <h2 class="font-black text-lg uppercase tracking-tight text-white">🎨 Essai IA Gratuit</h2>
+                            <p class="text-slate-400 text-sm mt-1">Transformez votre photo avec l'IA — 1 génération offerte</p>
+                        </div>
+                        <button onclick="toggleDashDemo()" id="dash-demo-toggle" class="text-slate-400 hover:text-white transition">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <!-- Déjà utilisé -->
+                    <div id="dash-demo-used" class="hidden p-6 text-center">
+                        <p class="text-2xl mb-2">✅</p>
+                        <p class="text-white font-black mb-2">Essai déjà utilisé</p>
+                        <p class="text-slate-400 text-sm mb-4">Commandez la version HD sans filigrane</p>
+                        <a href="https://wa.me/33749518336?text=Bonjour%20André-Marc%20!%20Je%20veux%20commander%20la%20version%20HD%20!" target="_blank"
+                           class="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                            <i class="fab fa-whatsapp"></i> Commander la HD
+                        </a>
+                    </div>
+
+                    <!-- Formulaire démo dashboard -->
+                    <div id="dash-demo-form" class="hidden p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-white font-black text-xs uppercase tracking-widest mb-2">1. Votre photo</p>
+                                    <label id="dash-upload-label" class="block border-2 border-dashed border-slate-700 rounded-2xl p-5 text-center cursor-pointer hover:border-blue-500 transition-colors">
+                                        <input type="file" id="dash-photo-input" accept="image/*" class="hidden" onchange="handleDemoPhotoUpload2(this)">
+                                        <i class="fas fa-cloud-upload-alt text-2xl text-slate-500 mb-2 block"></i>
+                                        <p class="text-slate-400 text-sm font-bold">Cliquez pour uploader</p>
+                                    </label>
+                                    <div id="dash-photo-preview" class="hidden mt-3 rounded-2xl overflow-hidden" style="height:120px;">
+                                        <img id="dash-preview-img" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-white font-black text-xs uppercase tracking-widest mb-2">2. Style</p>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="dash-style-card cursor-pointer rounded-xl p-3 border-2 border-slate-700 hover:border-blue-500 transition-all text-center" onclick="selectDemoStyle2(this,'blockbuster')">
+                                            <div class="text-xl mb-1">⚡</div><p class="text-white font-black text-xs">Blockbuster</p>
+                                        </div>
+                                        <div class="dash-style-card cursor-pointer rounded-xl p-3 border-2 border-slate-700 hover:border-blue-500 transition-all text-center" onclick="selectDemoStyle2(this,'cinema_noir')">
+                                            <div class="text-xl mb-1">🎬</div><p class="text-white font-black text-xs">Cinéma Noir</p>
+                                        </div>
+                                        <div class="dash-style-card cursor-pointer rounded-xl p-3 border-2 border-slate-700 hover:border-blue-500 transition-all text-center" onclick="selectDemoStyle2(this,'romance')">
+                                            <div class="text-xl mb-1">❤️</div><p class="text-white font-black text-xs">Romance</p>
+                                        </div>
+                                        <div class="dash-style-card cursor-pointer rounded-xl p-3 border-2 border-slate-700 hover:border-blue-500 transition-all text-center" onclick="selectDemoStyle2(this,'scifi')">
+                                            <div class="text-xl mb-1">🚀</div><p class="text-white font-black text-xs">Sci-Fi</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="dash-generate-btn" onclick="generateDemoImage2()" disabled
+                                    class="w-full py-3 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest opacity-50 cursor-not-allowed transition-all">
+                                    <i class="fas fa-wand-magic-sparkles mr-2"></i> Générer
+                                </button>
+                            </div>
+                            <div>
+                                <p class="text-white font-black text-xs uppercase tracking-widest mb-2">3. Résultat</p>
+                                <div id="dash-result-box" class="bg-slate-800 rounded-2xl flex items-center justify-center relative overflow-hidden" style="min-height:250px;">
+                                    <div id="dash-placeholder" class="text-center p-6">
+                                        <i class="fas fa-image text-3xl text-slate-600 mb-2 block"></i>
+                                        <p class="text-slate-500 text-sm">Résultat ici</p>
+                                    </div>
+                                    <div id="dash-loading" class="hidden text-center p-6">
+                                        <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+                                        <p class="text-blue-400 font-black text-xs uppercase tracking-widest">Génération...</p>
+                                    </div>
+                                    <div id="dash-result-wrap" class="hidden w-full relative">
+                                        <img id="dash-result-img" class="w-full rounded-2xl">
+                                        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+                                            <p style="color:rgba(255,255,255,0.35);font-weight:900;font-size:1.2rem;text-transform:uppercase;letter-spacing:0.1em;transform:rotate(-30deg);white-space:nowrap;user-select:none;">IAVIDEO91.FR</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="dash-cta" class="hidden mt-3">
+                                    <a href="https://wa.me/33749518336?text=Bonjour%20André-Marc%20!%20Je%20veux%20la%20version%20HD%20!" target="_blank"
+                                       class="flex items-center justify-center gap-2 w-full py-3 bg-green-500 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                                        <i class="fab fa-whatsapp"></i> Obtenir la HD sans filigrane
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -3032,7 +3245,18 @@
 
         function updateNavForUser(loggedIn) {
             const label = document.getElementById('nav-espace-label');
+            const btn = document.getElementById('nav-espace-btn');
             if (label) label.textContent = loggedIn ? 'Mon Espace' : 'Connexion';
+            if (btn) {
+                if (loggedIn) {
+                    btn.style.background = '#16a34a';
+                    btn.title = 'Connecté — Mon Espace';
+                } else {
+                    btn.style.background = '';
+                }
+            }
+            // Update demo section
+            setTimeout(() => { updateDemoUI(); }, 300);
         }
 
         function showEspaceClient() {
