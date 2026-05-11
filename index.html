@@ -181,16 +181,10 @@
             document.getElementById('dash-result-wrap').classList.add('hidden');
 
             try {
-                const imgResponse = await fetch('https://api.x.ai/v1/images/generations', {
+                const imgResponse = await fetch(EDGE_FUNCTION_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROK_API_KEY}` },
-                    body: JSON.stringify({
-                        model: 'aurora',
-                        prompt: demoStylePrompts[dashSelectedStyle],
-                        n: 1,
-                        size: '1024x1024',
-                        response_format: 'b64_json'
-                    })
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
+                    body: JSON.stringify({ prompt: demoStylePrompts[dashSelectedStyle] })
                 });
 
                 if (!imgResponse.ok) throw new Error(`Erreur API: ${imgResponse.status}`);
@@ -221,7 +215,7 @@
         }
 
         /* === DÉMO IA GROK === */
-        const GROK_API_KEY = 'xai-49efNAWO4CdJJkRpvIJ8HHx6fClWOSXg95kRDGDkFYw1x7opwfWavZKUmLAyBaplOMBIV8KmwQVgxgNl';
+        const EDGE_FUNCTION_URL = 'https://dbxoacwdalvuqlmamigu.supabase.co/functions/v1/smart-processor';
         let demoPhotoBase64 = null;
         let demoSelectedStyle = null;
 
@@ -317,16 +311,10 @@
 
             try {
                 // Generate image with Aurora
-                const imgResponse = await fetch('https://api.x.ai/v1/images/generations', {
+                const imgResponse = await fetch(EDGE_FUNCTION_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROK_API_KEY}` },
-                    body: JSON.stringify({
-                        model: 'aurora',
-                        prompt: demoStylePrompts[demoSelectedStyle],
-                        n: 1,
-                        size: '1024x1024',
-                        response_format: 'b64_json'
-                    })
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_ANON}` },
+                    body: JSON.stringify({ prompt: demoStylePrompts[demoSelectedStyle] })
                 });
 
                 clearInterval(msgInterval);
