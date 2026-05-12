@@ -99,6 +99,108 @@
         /* === OFFSET NAV FIXE === */
         .page-content { scroll-margin-top: 120px; }
 
+        /* === PANEL ADMIN === */
+        const ADMIN_EMAIL = 'andre.c@iavideo91.fr';
+        const ADMIN_ID = 'c20caeb2-8b2a-45be-8f74-2b90cb7bfe39';
+
+        async function showAdminPanel() {
+            if (!currentUser) { showPage('auth'); return; }
+            if (currentUser.id !== ADMIN_ID) {
+                showPage('admin');
+                document.getElementById('admin-content').classList.add('hidden');
+                document.getElementById('admin-denied').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('admin-content').classList.remove('hidden');
+            document.getElementById('admin-denied').classList.add('hidden');
+            showPage('admin');
+            loadAdmin();
+        }
+
+        async function loadAdmin() {
+            if (!sb || !currentUser || currentUser.id !== ADMIN_ID) return;
+
+            // Load all profiles
+            const { data: users } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
+            document.getElementById('admin-total-users').textContent = users?.length || 0;
+            document.getElementById('admin-users-count').textContent = `${users?.length || 0} membre(s)`;
+
+            const usersList = document.getElementById('admin-users-list');
+            if (users && users.length > 0) {
+                usersList.innerHTML = users.map(u => `
+                    <div class="flex items-center justify-between bg-slate-800 rounded-2xl p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-black">
+                                ${(u.prenom || '?')[0].toUpperCase()}
+                            </div>
+                            <div>
+                                <p class="text-white font-black text-sm">${u.prenom || ''} ${u.nom || ''}</p>
+                                <p class="text-slate-400 text-xs">${u.telephone || 'Pas de téléphone'}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            ${u.generation_utilisee ? '<span class="px-2 py-1 bg-green-900/40 text-green-400 text-xs font-black rounded-full">Essai utilisé</span>' : '<span class="px-2 py-1 bg-slate-700 text-slate-400 text-xs font-black rounded-full">Pas d\'essai</span>'}
+                            <span class="text-slate-500 text-xs">${new Date(u.created_at).toLocaleDateString('fr-FR')}</span>
+                        </div>
+                    </div>`).join('');
+            } else {
+                usersList.innerHTML = '<p class="text-slate-500 text-sm text-center py-4">Aucun membre</p>';
+            }
+
+            // Load all commandes
+            const { data: commandes } = await sb.from('commandes').select('*, profiles(prenom, nom, telephone)').order('created_at', { ascending: false });
+            const total = commandes?.length || 0;
+            const enCours = commandes?.filter(c => c.statut === 'en_cours').length || 0;
+            const livrees = commandes?.filter(c => c.statut === 'livree').length || 0;
+            document.getElementById('admin-total-commandes').textContent = total;
+            document.getElementById('admin-en-cours').textContent = enCours;
+            document.getElementById('admin-livrees').textContent = livrees;
+            document.getElementById('admin-commandes-count').textContent = `${total} commande(s)`;
+
+            const statusColors = { en_attente: 'bg-yellow-900/40 text-yellow-400', en_cours: 'bg-blue-900/40 text-blue-400', livree: 'bg-green-900/40 text-green-400' };
+            const statusLabels = { en_attente: 'En attente', en_cours: 'En cours', livree: 'Livrée' };
+
+            const commandesList = document.getElementById('admin-commandes-list');
+            if (commandes && commandes.length > 0) {
+                commandesList.innerHTML = commandes.map(c => `
+                    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <p class="text-white font-black text-sm mb-1">${c.type_projet || 'Projet IA'}</p>
+                                <p class="text-slate-400 text-xs">${c.profiles?.prenom || ''} ${c.profiles?.nom || ''} ${c.profiles?.telephone ? '· ' + c.profiles.telephone : ''}</p>
+                                ${c.description ? `<p class="text-slate-500 text-xs mt-1 italic">"${c.description.substring(0, 80)}..."</p>` : ''}
+                            </div>
+                            <div class="flex items-center gap-3 flex-wrap">
+                                ${c.prix ? `<span class="text-white font-black text-sm">${c.prix}€</span>` : ''}
+                                <span class="text-slate-500 text-xs">${new Date(c.created_at).toLocaleDateString('fr-FR')}</span>
+                                <select onchange="updateStatutCommande('${c.id}', this.value)"
+                                    class="text-xs font-black px-3 py-2 rounded-xl border-none outline-none cursor-pointer ${statusColors[c.statut] || 'bg-slate-700 text-slate-300'}">
+                                    <option value="en_attente" ${c.statut === 'en_attente' ? 'selected' : ''}>En attente</option>
+                                    <option value="en_cours" ${c.statut === 'en_cours' ? 'selected' : ''}>En cours</option>
+                                    <option value="livree" ${c.statut === 'livree' ? 'selected' : ''}>Livrée ✓</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>`).join('');
+            } else {
+                commandesList.innerHTML = '<p class="text-slate-500 text-sm text-center py-4">Aucune commande</p>';
+            }
+        }
+
+        async function updateStatutCommande(id, statut) {
+            if (!sb) return;
+            await sb.from('commandes').update({ statut, updated_at: new Date().toISOString() }).eq('id', id);
+            loadAdmin();
+        }
+
+        // Raccourci clavier secret : Ctrl+Shift+A
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                showAdminPanel();
+            }
+        });
+
         /* === DÉMO DASHBOARD === */
         let dashPhotoBase64 = null;
         let dashSelectedStyle = null;
@@ -2851,6 +2953,82 @@
 
     <!-- SUPABASE SDK -->
 
+
+    <!-- PAGE ADMIN -->
+    <main id="admin-page" class="page-content min-h-screen bg-slate-950 pb-24" style="padding-top:120px;">
+        <div class="max-w-6xl mx-auto px-6">
+
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+                <div>
+                    <span class="text-red-400 font-black text-xs uppercase tracking-[0.2em] mb-2 block">⚡ Accès restreint</span>
+                    <h1 class="text-4xl font-black uppercase italic text-white tracking-tighter">Panel Admin</h1>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="loadAdmin()" class="px-5 py-3 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                        <i class="fas fa-refresh mr-2"></i>Actualiser
+                    </button>
+                    <button onclick="handleLogout()" class="px-5 py-3 bg-slate-700 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:bg-slate-600 transition">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Déconnexion
+                    </button>
+                </div>
+            </div>
+
+            <!-- Accès refusé -->
+            <div id="admin-denied" class="hidden text-center py-20">
+                <div class="text-6xl mb-4">🔐</div>
+                <p class="text-white font-black text-2xl mb-2">Accès refusé</p>
+                <p class="text-slate-400">Vous n'êtes pas administrateur.</p>
+                <button onclick="showPage('home')" class="mt-6 px-6 py-3 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest">Retour à l'accueil</button>
+            </div>
+
+            <!-- Contenu admin -->
+            <div id="admin-content">
+
+                <!-- Stats globales -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                    <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800 text-center">
+                        <div id="admin-total-users" class="text-3xl font-black text-blue-400 mb-1">—</div>
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Membres</p>
+                    </div>
+                    <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800 text-center">
+                        <div id="admin-total-commandes" class="text-3xl font-black text-yellow-400 mb-1">—</div>
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Commandes</p>
+                    </div>
+                    <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800 text-center">
+                        <div id="admin-en-cours" class="text-3xl font-black text-orange-400 mb-1">—</div>
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">En cours</p>
+                    </div>
+                    <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800 text-center">
+                        <div id="admin-livrees" class="text-3xl font-black text-green-400 mb-1">—</div>
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Livrées</p>
+                    </div>
+                </div>
+
+                <!-- Membres inscrits -->
+                <div class="bg-slate-900 rounded-[2rem] border border-slate-800 mb-8">
+                    <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                        <h2 class="font-black text-lg uppercase tracking-tight text-white">👥 Membres inscrits</h2>
+                        <span id="admin-users-count" class="text-slate-400 text-sm font-bold"></span>
+                    </div>
+                    <div id="admin-users-list" class="p-6 space-y-3">
+                        <p class="text-slate-500 text-sm text-center py-4">Chargement...</p>
+                    </div>
+                </div>
+
+                <!-- Toutes les commandes -->
+                <div class="bg-slate-900 rounded-[2rem] border border-slate-800">
+                    <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                        <h2 class="font-black text-lg uppercase tracking-tight text-white">📦 Toutes les commandes</h2>
+                        <span id="admin-commandes-count" class="text-slate-400 text-sm font-bold"></span>
+                    </div>
+                    <div id="admin-commandes-list" class="p-6 space-y-4">
+                        <p class="text-slate-500 text-sm text-center py-4">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <!-- PAGE CONNEXION -->
     <main id="auth-page" class="page-content min-h-screen bg-slate-950 px-6" style="padding-top:120px;padding-bottom:60px;">
