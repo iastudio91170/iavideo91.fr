@@ -104,6 +104,11 @@
         const ADMIN_ID = 'c20caeb2-8b2a-45be-8f74-2b90cb7bfe39';
 
         async function showAdminPanel() {
+            // Si pas encore de user, essayer de récupérer la session
+            if (!currentUser && sb) {
+                const { data: { session } } = await sb.auth.getSession();
+                if (session) currentUser = session.user;
+            }
             if (!currentUser) { showPage('auth'); return; }
             if (currentUser.id !== ADMIN_ID) {
                 showPage('admin');
@@ -1424,7 +1429,9 @@
                 <a href="tel:0749518336" class="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-blue-600 transition-all flex items-center gap-2">
                     07.49.51.83.36
                 </a>
-                <button onclick="showEspaceClient()" id="nav-espace-btn" class="bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition-all flex items-center gap-2 font-black text-xs uppercase tracking-widest">
+                <button onclick="showAdminPanel()" id="nav-admin-btn" class="hidden bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-all font-black text-xs uppercase tracking-widest">
+                    ⚡ Admin
+                </button>
                     <i class="fas fa-user"></i> <span id="nav-espace-label">Mon Espace</span>
                 </button>
                 <!-- Toggle mode sombre -->
@@ -3337,6 +3344,7 @@
         function updateNavForUser(loggedIn) {
             const label = document.getElementById('nav-espace-label');
             const btn = document.getElementById('nav-espace-btn');
+            const adminBtn = document.getElementById('nav-admin-btn');
             if (label) label.textContent = loggedIn ? 'Mon Espace' : 'Connexion';
             if (btn) {
                 if (loggedIn) {
@@ -3346,7 +3354,13 @@
                     btn.style.background = '';
                 }
             }
-            // Update demo section
+            if (adminBtn) {
+                if (loggedIn && currentUser?.id === ADMIN_ID) {
+                    adminBtn.classList.remove('hidden');
+                } else {
+                    adminBtn.classList.add('hidden');
+                }
+            }
             setTimeout(() => { updateDemoUI(); }, 300);
         }
 
@@ -3651,6 +3665,25 @@
             const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
             if (active) active.classList.add('nav-link-active');
         }
+            const hash = window.location.hash.replace('#', '') || 'home';
+            if (hash === 'admin') {
+                showAdminPanel();
+                return;
+            }
+            const validPages = ['home','portfolio','evenements','tarifs','apropos','contact','parrainage','auth','dashboard'];
+            const pageId = validPages.includes(hash) ? hash : 'home';
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
+            const page = document.getElementById(pageId + '-page');
+            if (page) page.classList.add('page-active');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-link-active'));
+            const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+            if (active) active.classList.add('nav-link-active');
+            window.scrollTo(0, 0);
+            if (pageId === 'dashboard' && typeof loadDashboard === 'function') loadDashboard();
+        }
+
+        window.addEventListener('popstate', routeFromHash);
+        routeFromHash();
         
         function toggleMenu() {
             document.getElementById('mobile-menu').classList.toggle('active');
