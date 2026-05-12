@@ -3665,26 +3665,12 @@
             const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
             if (active) active.classList.add('nav-link-active');
         }
-            const hash = window.location.hash.replace('#', '') || 'home';
-            if (hash === 'admin') {
-                showAdminPanel();
-                return;
-            }
-            const validPages = ['home','portfolio','evenements','tarifs','apropos','contact','parrainage','auth','dashboard'];
-            const pageId = validPages.includes(hash) ? hash : 'home';
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
-            const page = document.getElementById(pageId + '-page');
-            if (page) page.classList.add('page-active');
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-link-active'));
-            const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
-            if (active) active.classList.add('nav-link-active');
-            window.scrollTo(0, 0);
-            if (pageId === 'dashboard' && typeof loadDashboard === 'function') loadDashboard();
+
+        // Ouvre le panel admin si URL = #admin
+        if (window.location.hash === '#admin') {
+            window.addEventListener('load', () => setTimeout(showAdminPanel, 1200));
         }
 
-        window.addEventListener('popstate', routeFromHash);
-        routeFromHash();
-        
         function toggleMenu() {
             document.getElementById('mobile-menu').classList.toggle('active');
         }
