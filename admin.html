@@ -38,7 +38,7 @@
       <p style="color:#6b7280;font-size:0.875rem;margin-top:0.25rem;">IAViDEO-91</p>
     </div>
     <div style="display:flex;flex-direction:column;gap:0.75rem;">
-      <input type="password" id="admin-email-input" placeholder="Email admin" style="background:#1f2937;border:2px solid #374151;color:white;border-radius:1rem;padding:1rem 1.25rem;width:100%;outline:none;font-size:1rem;" onkeydown="if(event.key==='Enter')loginAdmin()">
+      <input type="email" id="admin-email-input" placeholder="Email admin" style="background:#1f2937;border:2px solid #374151;color:white;border-radius:1rem;padding:1rem 1.25rem;width:100%;outline:none;font-size:1rem;" onkeydown="if(event.key==='Enter')loginAdmin()">
       <input type="password" id="admin-pass-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')loginAdmin()">
       <button onclick="loginAdmin()" style="padding:1rem;background:#dc2626;color:white;font-weight:900;border-radius:1rem;font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;margin-top:0.25rem;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
         Accéder au panel →
@@ -145,11 +145,21 @@ async function loginAdmin() {
 
   if (!email || !pass) { err.textContent = 'Remplissez les deux champs'; err.style.display = 'block'; return; }
 
+  err.textContent = 'Connexion en cours...';
+  err.style.color = '#60a5fa';
+  err.style.display = 'block';
+
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
 
-  if (error || !data.user || data.user.id !== ADMIN_ID) {
-    err.textContent = 'Accès refusé — compte non autorisé';
-    err.style.display = 'block';
+  if (error) {
+    err.textContent = 'Erreur : ' + error.message;
+    err.style.color = '#f87171';
+    return;
+  }
+
+  if (!data.user || data.user.id !== ADMIN_ID) {
+    err.textContent = 'Compte non autorisé (ID: ' + data.user?.id + ')';
+    err.style.color = '#f87171';
     await sb.auth.signOut();
     return;
   }
