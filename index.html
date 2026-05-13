@@ -3403,7 +3403,6 @@
 
         /* === LOGIN === */
         async function handleLogin() {
-            if (!sb) { alert('Chargement en cours, réessayez'); return; }
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
             const err = document.getElementById('login-error');
@@ -3412,6 +3411,12 @@
             if (!email || !password) { err.textContent = 'Remplissez tous les champs'; err.classList.remove('hidden'); return; }
             btn.textContent = 'Connexion...';
             btn.disabled = true;
+
+            // Attendre que Supabase soit prêt
+            let attempts = 0;
+            while (!sb && attempts < 20) { await new Promise(r => setTimeout(r, 200)); attempts++; }
+            if (!sb) { err.textContent = 'Erreur de connexion, rechargez la page'; err.classList.remove('hidden'); btn.textContent = 'Se connecter →'; btn.disabled = false; return; }
+
             try {
                 const { data, error } = await sb.auth.signInWithPassword({ email, password });
                 if (error) {
