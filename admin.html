@@ -120,21 +120,15 @@
 
 <script>
 const SUPABASE_URL = 'https://dbxoacwdalvuqlmamigu.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRieG9hY3dkYWx2dXFsbWFtaWd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjE5NjMsImV4cCI6MjA5MzkzNzk2M30.Pu2CrsyhRdC9W7pKhsVLl5FWxoeeutI2nmi3YNPyJ5A';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRieG9hY3dkYWx2dXFsbWFtaWd1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODM2MTk2MywiZXhwIjoyMDkzOTM3OTYzfQ.Ao2oxGKv910wbNKFcIAb0VQ-FCOEYB6wctcwe6vfPzA';
 const ADMIN_EMAIL = 'andre.c@iavideo91.fr';
-const ADMIN_ID = 'c20caeb2-8b2a-45be-8f74-2b90cb7bfe39';
+const ADMIN_PASS_HASH = 'iavideo91admin'; // mot de passe simple côté JS
+let authenticated = false;
 
 let sb = null;
 
 window.addEventListener('load', () => {
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-  // Check if already logged in
-  sb.auth.getSession().then(({ data: { session } }) => {
-    if (session && session.user.id === ADMIN_ID) {
-      showApp();
-      loadAll();
-    }
-  });
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 });
 
 async function loginAdmin() {
@@ -143,27 +137,21 @@ async function loginAdmin() {
   const err = document.getElementById('login-error');
   err.style.display = 'none';
 
-  if (!email || !pass) { err.textContent = 'Remplissez les deux champs'; err.style.display = 'block'; return; }
+  if (!email || !pass) { err.textContent = 'Remplissez les deux champs'; err.style.color='#f87171'; err.style.display = 'block'; return; }
+  if (email !== ADMIN_EMAIL) { err.textContent = 'Email non autorisé'; err.style.color='#f87171'; err.style.display = 'block'; return; }
 
-  err.textContent = 'Connexion en cours...';
-  err.style.color = '#60a5fa';
-  err.style.display = 'block';
+  err.textContent = 'Connexion...'; err.style.color='#60a5fa'; err.style.display='block';
 
+  // Auth via Supabase avec les vrais identifiants
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
 
   if (error) {
-    err.textContent = 'Erreur : ' + error.message;
+    err.textContent = 'Mot de passe incorrect';
     err.style.color = '#f87171';
     return;
   }
 
-  if (!data.user || data.user.id !== ADMIN_ID) {
-    err.textContent = 'Compte non autorisé (ID: ' + data.user?.id + ')';
-    err.style.color = '#f87171';
-    await sb.auth.signOut();
-    return;
-  }
-
+  authenticated = true;
   showApp();
   loadAll();
 }
@@ -174,6 +162,7 @@ function showApp() {
 }
 
 async function logout() {
+  authenticated = false;
   await sb.auth.signOut();
   location.reload();
 }
@@ -215,7 +204,9 @@ async function loadUsers() {
 }
 
 async function loadCommandes() {
-  const { data: commandes, error } = await sb.from('commandes').select('*, profiles(prenom, nom, telephone)').order('created_at', { ascending: false });
+  const { data: commandes, error } = await sb.from('commandes')
+    .select('*, profiles(prenom, nom, telephone)')
+    .order('created_at', { ascending: false });
   if (error) { console.error(error); return; }
 
   const total = commandes?.length || 0;
@@ -229,27 +220,66 @@ async function loadCommandes() {
 
   const list = document.getElementById('list-commandes');
   if (!commandes || commandes.length === 0) {
-    list.innerHTML = '<p style="color:#6b7280;text-align:center;padding:2rem;font-size:0.875rem;">Aucune commande</p>';
+    list.innerHTML = '<p style="color:#6b7280;text-align:center;padding:2rem;font-size:0.875rem;">Aucune commande pour le moment</p>';
     return;
   }
 
+  const statutSteps = ['en_attente', 'en_cours', 'livree'];
+  const statutLabels = { en_attente: 'Reçue', en_cours: 'En production', livree: 'Livrée' };
+  const statutIcons = { en_attente: '📥', en_cours: '⚙️', livree: '✅' };
+
   list.innerHTML = commandes.map(c => {
-    const badgeClass = c.statut === 'en_attente' ? 'badge-attente' : c.statut === 'en_cours' ? 'badge-cours' : 'badge-livree';
-    return `
-    <div class="row">
-      <div style="flex:1;min-width:0;">
-        <p style="font-weight:900;font-size:0.875rem;margin-bottom:0.25rem;">${c.type_projet || 'Projet IA'}</p>
-        <p style="color:#6b7280;font-size:0.75rem;">${c.profiles?.prenom || ''} ${c.profiles?.nom || ''} ${c.profiles?.telephone ? '· ' + c.profiles.telephone : ''}</p>
-        ${c.description ? `<p style="color:#4b5563;font-size:0.7rem;margin-top:0.25rem;font-style:italic;">"${c.description.substring(0,80)}..."</p>` : ''}
+    const currentStep = statutSteps.indexOf(c.statut);
+    const timeline = statutSteps.map((s, i) => {
+      const done = i <= currentStep;
+      const active = i === currentStep;
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:0.25rem;flex:1;">
+        <div style="width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;
+          background:${done ? (active ? '#2563eb' : '#16a34a') : '#374151'};
+          border:2px solid ${done ? (active ? '#3b82f6' : '#22c55e') : '#4b5563'};">
+          ${done ? (active ? '●' : '✓') : '○'}
+        </div>
+        <span style="font-size:0.6rem;font-weight:700;text-transform:uppercase;color:${done ? '#e5e7eb' : '#6b7280'};">${statutLabels[s]}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
-        ${c.prix ? `<span style="font-weight:900;font-size:0.875rem;">${c.prix}€</span>` : ''}
-        <span style="color:#4b5563;font-size:0.7rem;">${new Date(c.created_at).toLocaleDateString('fr-FR')}</span>
-        <select onchange="updateStatut('${c.id}', this.value)" class="${badgeClass}" style="padding:0.4rem 0.6rem;font-size:0.7rem;font-weight:900;border-radius:0.5rem;border:none;">
-          <option value="en_attente" ${c.statut==='en_attente'?'selected':''}>En attente</option>
-          <option value="en_cours" ${c.statut==='en_cours'?'selected':''}>En cours</option>
-          <option value="livree" ${c.statut==='livree'?'selected':''}>Livrée ✓</option>
-        </select>
+      ${i < 2 ? `<div style="flex:1;height:2px;background:${i < currentStep ? '#16a34a' : '#374151'};margin-top:1rem;"></div>` : ''}`;
+    }).join('');
+
+    return `
+    <div style="background:#1f2937;border-radius:1rem;padding:1.25rem;border:1px solid #374151;margin-bottom:0.75rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+        <div>
+          <p style="font-weight:900;font-size:0.95rem;">${statutIcons[c.statut]} ${c.type_projet || 'Projet IA'}</p>
+          <p style="color:#9ca3af;font-size:0.75rem;margin-top:0.2rem;">
+            👤 ${c.profiles?.prenom || ''} ${c.profiles?.nom || '—'}
+            ${c.profiles?.telephone ? ` · 📞 ${c.profiles.telephone}` : ''}
+          </p>
+          ${c.description ? `<p style="color:#6b7280;font-size:0.7rem;margin-top:0.25rem;font-style:italic;">"${c.description.substring(0,100)}..."</p>` : ''}
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          ${c.prix ? `<span style="font-weight:900;color:#fbbf24;">${c.prix}€</span>` : ''}
+          <span style="color:#6b7280;font-size:0.7rem;">${new Date(c.created_at).toLocaleDateString('fr-FR')}</span>
+        </div>
+      </div>
+
+      <!-- Timeline visuelle -->
+      <div style="display:flex;align-items:center;margin-bottom:1rem;">${timeline}</div>
+
+      <!-- Changement de statut -->
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button onclick="updateStatut('${c.id}','en_attente')" style="padding:0.4rem 0.75rem;border-radius:0.5rem;font-size:0.7rem;font-weight:700;border:none;cursor:pointer;background:${c.statut==='en_attente'?'#854d0e':'#374151'};color:${c.statut==='en_attente'?'#fbbf24':'#9ca3af'};">
+          📥 Reçue
+        </button>
+        <button onclick="updateStatut('${c.id}','en_cours')" style="padding:0.4rem 0.75rem;border-radius:0.5rem;font-size:0.7rem;font-weight:700;border:none;cursor:pointer;background:${c.statut==='en_cours'?'#1e3a8a':'#374151'};color:${c.statut==='en_cours'?'#60a5fa':'#9ca3af'};">
+          ⚙️ En production
+        </button>
+        <button onclick="updateStatut('${c.id}','livree')" style="padding:0.4rem 0.75rem;border-radius:0.5rem;font-size:0.7rem;font-weight:700;border:none;cursor:pointer;background:${c.statut==='livree'?'#14532d':'#374151'};color:${c.statut==='livree'?'#4ade80':'#9ca3af'};">
+          ✅ Livrée
+        </button>
+        ${c.profiles?.telephone ? `
+        <a href="https://wa.me/33${c.profiles.telephone.replace(/^0/,'').replace(/\s/g,'')}" target="_blank"
+          style="padding:0.4rem 0.75rem;border-radius:0.5rem;font-size:0.7rem;font-weight:700;background:#15803d;color:white;text-decoration:none;margin-left:auto;">
+          💬 WhatsApp client
+        </a>` : ''}
       </div>
     </div>`;
   }).join('');
