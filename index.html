@@ -3101,7 +3101,7 @@
                 <input id="login-password" type="password" placeholder="Mot de passe" autocomplete="current-password"
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-base placeholder-slate-500"
                     onkeydown="if(event.key==='Enter')handleLogin()">
-                <button type="button" onclick="handleLogin()" id="btn-login"
+                <button type="button" id="btn-login"
                     style="width:100%;padding:1.1rem;background:#2563eb;color:white;font-weight:900;border-radius:1rem;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
                     Se connecter →
                 </button>
@@ -3123,7 +3123,7 @@
                 <input id="reg-password" type="password" placeholder="Mot de passe (min. 6 caractères)" autocomplete="new-password"
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-base placeholder-slate-500"
                     onkeydown="if(event.key==='Enter')handleRegister()">
-                <button type="button" onclick="handleRegister()" id="btn-register"
+                <button type="button" id="btn-register"
                     style="width:100%;padding:1.1rem;background:#2563eb;color:white;font-weight:900;border-radius:1rem;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
                     Créer mon compte →
                 </button>
@@ -3321,6 +3321,20 @@
                 console.error('Supabase init error:', e);
             }
         }
+
+        /* === BOUTONS AUTH MOBILE === */
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnLogin = document.getElementById('btn-login');
+            const btnRegister = document.getElementById('btn-register');
+            if (btnLogin) {
+                btnLogin.addEventListener('click', handleLogin);
+                btnLogin.addEventListener('touchend', function(e) { e.preventDefault(); handleLogin(); });
+            }
+            if (btnRegister) {
+                btnRegister.addEventListener('click', handleRegister);
+                btnRegister.addEventListener('touchend', function(e) { e.preventDefault(); handleRegister(); });
+            }
+        });
 
         /* === INIT AUTH === */
         async function initAuth() {
