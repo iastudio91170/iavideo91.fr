@@ -3101,7 +3101,7 @@
                 <input id="login-password" type="password" placeholder="Mot de passe" autocomplete="current-password"
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-base placeholder-slate-500"
                     onkeydown="if(event.key==='Enter')handleLogin()">
-                <button type="button" id="btn-login"
+                <button type="button" id="btn-login" onclick="handleLogin()"
                     style="width:100%;padding:1.1rem;background:#2563eb;color:white;font-weight:900;border-radius:1rem;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
                     Se connecter →
                 </button>
@@ -3123,7 +3123,7 @@
                 <input id="reg-password" type="password" placeholder="Mot de passe (min. 6 caractères)" autocomplete="new-password"
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-base placeholder-slate-500"
                     onkeydown="if(event.key==='Enter')handleRegister()">
-                <button type="button" id="btn-register"
+                <button type="button" id="btn-register" onclick="handleRegister()"
                     style="width:100%;padding:1.1rem;background:#2563eb;color:white;font-weight:900;border-radius:1rem;font-size:1rem;letter-spacing:0.05em;text-transform:uppercase;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
                     Créer mon compte →
                 </button>
@@ -3321,23 +3321,6 @@
                 console.error('Supabase init error:', e);
             }
         }
-
-        /* === BOUTONS AUTH MOBILE === */
-        function attachAuthButtons() {
-            const btnLogin = document.getElementById('btn-login');
-            const btnRegister = document.getElementById('btn-register');
-            if (btnLogin && !btnLogin._bound) {
-                btnLogin._bound = true;
-                btnLogin.addEventListener('touchend', function(e) { e.preventDefault(); handleLogin(); }, { passive: false });
-                btnLogin.addEventListener('click', handleLogin);
-            }
-            if (btnRegister && !btnRegister._bound) {
-                btnRegister._bound = true;
-                btnRegister.addEventListener('touchend', function(e) { e.preventDefault(); handleRegister(); }, { passive: false });
-                btnRegister.addEventListener('click', handleRegister);
-            }
-        }
-        attachAuthButtons();
 
         /* === INIT AUTH === */
         async function initAuth() {
@@ -3704,7 +3687,6 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-link-active'));
             const active = document.querySelector(`.nav-link[data-page="${pageId}"]`);
             if (active) active.classList.add('nav-link-active');
-            if (pageId === 'auth') setTimeout(attachAuthButtons, 50);
         }
 
         // Ouvre le panel admin si URL = #admin
