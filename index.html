@@ -2250,7 +2250,7 @@
                             <button onclick="selectOffer('Mariage & Union'); showPage('contact')" class="px-8 py-4 bg-blue-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest hover:scale-105 transition-transform">Demander un devis gratuit</button>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="rounded-3xl overflow-hidden aspect-square bg-slate-800 shadow-2xl"><img src="https://i.postimg.cc/SN7HnP9d/grok-image-ef0cbefb-2f12-458f-9d76-455fce4a3641.jpg" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition" alt="Mariage"></div>
+                            <div class="rounded-3xl overflow-hidden aspect-square bg-slate-800 shadow-2xl"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition" alt="Mariage"></div>
                             <div class="rounded-3xl overflow-hidden aspect-square bg-slate-800 shadow-2xl mt-8"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition" alt="Mariage cérémonie"></div>
                         </div>
                     </div>
@@ -2281,7 +2281,7 @@
                         </div>
                         <div class="space-y-4">
                             <div class="rounded-3xl overflow-hidden shadow-2xl bg-slate-800" style="aspect-ratio:4/3;">
-                                <img src="https://i.postimg.cc/FHkcPMxV/19a7d018-ddd7-460a-8003-d9e6b9b45907.jpg" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition" alt="Passage âge adulte graduation">
+                                <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=700&q=80" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition" alt="Passage âge adulte graduation">
                             </div>
                             <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
                                 <p class="text-blue-400 font-black text-xs uppercase tracking-widest mb-4">Ce que vous recevez</p>
@@ -2358,7 +2358,7 @@
                         </div>
                         <div class="space-y-6">
                             <div class="rounded-3xl overflow-hidden shadow-2xl bg-slate-800" style="aspect-ratio:4/3;">
-                                <img src="https://i.postimg.cc/sf8gnv0s/d6f563f5-bcfc-4b58-a66f-842620166bf4.jpg" class="w-full h-full object-cover opacity-70" alt="Hommage mémoire">
+                                <img src="https://images.unsplash.com/photo-1609220136736-443140cffec6?w=700&q=80" class="w-full h-full object-cover opacity-70" alt="Hommage mémoire">
                             </div>
                             <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6 space-y-3">
                                 <div class="flex gap-1 text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -3069,7 +3069,7 @@
     </main>
 
     <!-- PAGE CONNEXION -->
-    <main id="auth-page" class="page-content min-h-screen bg-slate-950 px-6" style="padding-top:120px;padding-bottom:60px;">
+    <main id="auth-page" class="page-content bg-slate-950 px-6" style="padding-top:100px;padding-bottom:60px;min-height:100vh;">
         <div class="w-full max-w-md mx-auto">
 
             <!-- Logo + titre -->
@@ -3099,7 +3099,7 @@
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-sm placeholder-slate-500">
                 <input id="login-password" type="password" placeholder="Mot de passe" autocomplete="current-password"
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-sm placeholder-slate-500">
-                <button onclick="handleLogin()" id="btn-login"
+                <button type="button" onclick="handleLogin()" id="btn-login"
                     class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase text-sm tracking-widest hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/40">
                     Se connecter →
                 </button>
@@ -3120,7 +3120,7 @@
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-sm placeholder-slate-500">
                 <input id="reg-password" type="password" placeholder="Mot de passe (min. 6 caractères)" autocomplete="new-password"
                     class="w-full bg-slate-800 text-white rounded-2xl p-4 font-bold outline-none border-2 border-transparent focus:border-blue-500 transition-all text-sm placeholder-slate-500">
-                <button onclick="handleRegister()" id="btn-register"
+                <button type="button" onclick="handleRegister()" id="btn-register"
                     class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase text-sm tracking-widest hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/40">
                     Créer mon compte →
                 </button>
@@ -3425,7 +3425,7 @@
             const { data, error } = await sb.auth.signUp({
                 email,
                 password,
-                options: { data: { prenom, nom } }
+                options: { data: { prenom, nom, telephone: tel } }
             });
             if (error) {
                 err.textContent = error.message.includes('already') ? 'Email déjà utilisé' : error.message;
@@ -3434,14 +3434,23 @@
                 btn.disabled = false;
                 return;
             }
-            if (data.user) {
-                await sb.from('profiles').upsert({ id: data.user.id, prenom, nom, telephone: tel });
-                currentUser = data.user;
+            // Sauvegarder le profil — data.user peut être null si confirmation email activée
+            const userId = data.user?.id || data.session?.user?.id;
+            if (userId) {
+                await sb.from('profiles').upsert({
+                    id: userId,
+                    prenom,
+                    nom,
+                    telephone: tel
+                });
+                currentUser = data.user || data.session?.user;
             }
             ok.classList.remove('hidden');
             btn.textContent = 'Créer mon compte →';
             btn.disabled = false;
-            setTimeout(() => { showPage('dashboard'); loadDashboard(); }, 2000);
+            if (data.session) {
+                setTimeout(() => { showPage('dashboard'); loadDashboard(); }, 1500);
+            }
         }
 
         /* === LOGOUT === */
