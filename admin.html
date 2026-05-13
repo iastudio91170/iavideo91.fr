@@ -173,34 +173,53 @@ async function loadAll() {
 }
 
 async function loadUsers() {
-  const { data: users, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
-  if (error) { console.error(error); return; }
+  // Utiliser l'API admin pour lire auth.users directement
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`
+    }
+  });
+  const authData = await res.json();
+  const authUsers = authData.users || [];
 
-  document.getElementById('s-users').textContent = users?.length || 0;
-  document.getElementById('count-users').textContent = `${users?.length || 0} membre(s)`;
+  // Aussi lire les profils
+  const { data: profiles } = await sb.from('profiles').select('*');
+  const profilesMap = {};
+  (profiles || []).forEach(p => profilesMap[p.id] = p);
+
+  document.getElementById('s-users').textContent = authUsers.length;
+  document.getElementById('count-users').textContent = `${authUsers.length} membre(s)`;
 
   const list = document.getElementById('list-users');
-  if (!users || users.length === 0) {
+  if (!authUsers.length) {
     list.innerHTML = '<p style="color:#6b7280;text-align:center;padding:2rem;font-size:0.875rem;">Aucun membre</p>';
     return;
   }
 
-  list.innerHTML = users.map(u => `
+  list.innerHTML = authUsers.map(u => {
+    const p = profilesMap[u.id] || {};
+    const name = p.prenom || p.nom ? `${p.prenom || ''} ${p.nom || ''}`.trim() : u.email.split('@')[0];
+    const initial = name[0].toUpperCase();
+    return `
     <div class="row">
       <div style="display:flex;align-items:center;gap:0.75rem;flex:1;min-width:0;">
-        <div class="avatar">${(u.prenom || '?')[0].toUpperCase()}</div>
-        <div style="min-width:0;">
-          <p style="font-weight:900;font-size:0.875rem;">${u.prenom || ''} ${u.nom || '—'}</p>
-          <p style="color:#6b7280;font-size:0.75rem;">${u.telephone || 'Pas de téléphone'}</p>
+        <div class="avatar">${initial}</div>
+        <div>
+          <p style="font-weight:900;font-size:0.875rem;">${name}</p>
+          <p style="color:#6b7280;font-size:0.75rem;">${u.email}</p>
+          <p style="color:#4b5563;font-size:0.7rem;">${p.telephone || 'Pas de téléphone'}</p>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
-        ${u.generation_utilisee
+        ${p.generation_utilisee
           ? '<span style="background:rgba(34,197,94,0.1);color:#4ade80;padding:0.25rem 0.75rem;border-radius:999px;font-size:0.65rem;font-weight:900;text-transform:uppercase;">Essai utilisé</span>'
           : '<span style="background:#1f2937;color:#6b7280;padding:0.25rem 0.75rem;border-radius:999px;font-size:0.65rem;font-weight:900;text-transform:uppercase;">Pas d\'essai</span>'}
-        <span style="color:#4b5563;font-size:0.75rem;">${new Date(u.created_at).toLocaleDateString('fr-FR')}</span>
+        ${p.telephone ? `<a href="https://wa.me/33${p.telephone.replace(/^0/,'').replace(/[\s.]/g,'')}" target="_blank" style="padding:0.3rem 0.6rem;background:#15803d;color:white;border-radius:0.5rem;font-size:0.65rem;font-weight:700;text-decoration:none;">💬 WA</a>` : ''}
+        <span style="color:#4b5563;font-size:0.7rem;">${new Date(u.created_at).toLocaleDateString('fr-FR')}</span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 async function loadCommandes() {
