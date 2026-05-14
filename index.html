@@ -3135,6 +3135,15 @@
                 </div>
             </div>
 
+            <!-- Message succès connexion -->
+            <div id="login-success" class="hidden">
+                <p style="color:#4ade80;font-weight:700;font-size:0.85rem;text-align:center;margin-bottom:10px;">✓ Connexion réussie !</p>
+                <button onclick="goToDashboard()" type="button"
+                    style="width:100%;padding:1.1rem;background:#16a34a;color:white;font-weight:900;border-radius:1rem;font-size:1rem;text-transform:uppercase;border:none;cursor:pointer;touch-action:manipulation;">
+                    → Accéder à mon espace client
+                </button>
+            </div>
+
             <!-- WhatsApp fallback -->
             <div class="mt-8 text-center">
                 <p class="text-slate-500 text-xs mb-3">Ou contactez-nous directement</p>
@@ -3410,16 +3419,7 @@
                 updateNavForUser(true);
                 btn.textContent = '✓ Connecté !';
                 btn.style.background = '#16a34a';
-                // Afficher bouton accès espace client
-                const successDiv = document.createElement('div');
-                successDiv.innerHTML = `
-                    <div style="margin-top:12px;">
-                        <p style="color:#4ade80;font-weight:700;font-size:0.85rem;text-align:center;margin-bottom:10px;">✓ Connexion réussie !</p>
-                        <button onclick="goToDashboard()" style="width:100%;padding:1.1rem;background:#16a34a;color:white;font-weight:900;border-radius:1rem;font-size:1rem;text-transform:uppercase;border:none;cursor:pointer;touch-action:manipulation;">
-                            → Accéder à mon espace client
-                        </button>
-                    </div>`;
-                document.getElementById('form-login').appendChild(successDiv);
+                document.getElementById('login-success').classList.remove('hidden');
             }
         }
 
