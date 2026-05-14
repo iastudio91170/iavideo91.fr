@@ -3319,11 +3319,18 @@
             if (session) {
                 currentUser = session.user;
                 updateNavForUser(true);
+                // Redirection après login (reload)
+                const goto = sessionStorage.getItem('goto');
+                if (goto) {
+                    sessionStorage.removeItem('goto');
+                    document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
+                    document.getElementById(goto + '-page').classList.add('page-active');
+                    loadDashboard();
+                }
             }
             sb.auth.onAuthStateChange((_event, session) => {
                 currentUser = session?.user || null;
                 updateNavForUser(!!currentUser);
-                // Si #admin dans l'URL et qu'on vient de se connecter
                 if (currentUser && window.location.hash === '#admin') {
                     showAdminPanel();
                 }
@@ -3393,16 +3400,9 @@
                 btn.disabled = false;
             } else {
                 currentUser = data.user;
-                updateNavForUser(true);
-                // Sur iOS Safari, forcer le rendu en changeant le hash
-                window.location.hash = 'dashboard';
-                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
-                const dash = document.getElementById('dashboard-page');
-                dash.classList.add('page-active');
-                dash.style.display = 'block';
-                document.body.style.overflow = 'auto';
-                window.scrollTo(0, 0);
-                setTimeout(() => { loadDashboard(); }, 100);
+                // Méthode la plus fiable sur iOS : stocker l'état et recharger
+                sessionStorage.setItem('goto', 'dashboard');
+                location.reload();
             }
         }
 
