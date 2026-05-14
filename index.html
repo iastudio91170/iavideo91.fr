@@ -3382,11 +3382,7 @@
             const btn = document.getElementById('btn-login');
             err.classList.add('hidden');
             if (!email || !password) { err.textContent = 'Remplissez tous les champs'; err.classList.remove('hidden'); return; }
-            if (!sb) {
-                err.textContent = 'Erreur de connexion, rechargez la page';
-                err.classList.remove('hidden');
-                return;
-            }
+            if (!sb) { err.textContent = 'Rechargez la page'; err.classList.remove('hidden'); return; }
             btn.textContent = 'Connexion...';
             btn.disabled = true;
             const { data, error } = await sb.auth.signInWithPassword({ email, password });
@@ -3398,8 +3394,10 @@
             } else {
                 currentUser = data.user;
                 updateNavForUser(true);
+                // Navigation directe vers dashboard
                 document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
                 document.getElementById('dashboard-page').classList.add('page-active');
+                document.getElementById('dashboard-page').style.display = 'block';
                 window.scrollTo(0, 0);
                 loadDashboard();
             }
