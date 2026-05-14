@@ -3394,12 +3394,15 @@
             } else {
                 currentUser = data.user;
                 updateNavForUser(true);
-                // Navigation directe vers dashboard
+                // Sur iOS Safari, forcer le rendu en changeant le hash
+                window.location.hash = 'dashboard';
                 document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
-                document.getElementById('dashboard-page').classList.add('page-active');
-                document.getElementById('dashboard-page').style.display = 'block';
+                const dash = document.getElementById('dashboard-page');
+                dash.classList.add('page-active');
+                dash.style.display = 'block';
+                document.body.style.overflow = 'auto';
                 window.scrollTo(0, 0);
-                loadDashboard();
+                setTimeout(() => { loadDashboard(); }, 100);
             }
         }
 
