@@ -3323,14 +3323,9 @@
             sb.auth.onAuthStateChange((_event, session) => {
                 currentUser = session?.user || null;
                 updateNavForUser(!!currentUser);
-                // Redirection auto après connexion réussie
-                if (_event === 'SIGNED_IN' && currentUser) {
-                    if (window.location.hash === '#admin') {
-                        showAdminPanel();
-                    } else {
-                        showPage('dashboard');
-                        loadDashboard();
-                    }
+                // Si #admin dans l'URL et qu'on vient de se connecter
+                if (currentUser && window.location.hash === '#admin') {
+                    showAdminPanel();
                 }
             });
         }
@@ -3353,15 +3348,10 @@
             setTimeout(() => { updateDemoUI(); }, 300);
         }
 
-        async function showEspaceClient() {
-            if (!sb) { showPage('auth'); return; }
-            // Sur iOS, currentUser peut être null si la session n'est pas encore restaurée
-            if (!currentUser) {
-                const { data: { session } } = await sb.auth.getSession();
-                if (session) {
-                    currentUser = session.user;
-                    updateNavForUser(true);
-                }
+        function showEspaceClient() {
+            if (!sb) {
+                showPage('auth');
+                return;
             }
             if (currentUser) {
                 showPage('dashboard');
