@@ -3312,6 +3312,13 @@
         let sb = null;
         let currentUser = null;
 
+        function goToDashboard() {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
+            document.getElementById('dashboard-page').classList.add('page-active');
+            window.scrollTo(0, 0);
+            loadDashboard();
+        }
+
         /* === INIT AUTH === */
         async function initAuth() {
             if (!sb) return;
@@ -3400,9 +3407,19 @@
                 btn.disabled = false;
             } else {
                 currentUser = data.user;
-                // Méthode la plus fiable sur iOS : stocker l'état et recharger
-                sessionStorage.setItem('goto', 'dashboard');
-                location.reload();
+                updateNavForUser(true);
+                btn.textContent = '✓ Connecté !';
+                btn.style.background = '#16a34a';
+                // Afficher bouton accès espace client
+                const successDiv = document.createElement('div');
+                successDiv.innerHTML = `
+                    <div style="margin-top:12px;">
+                        <p style="color:#4ade80;font-weight:700;font-size:0.85rem;text-align:center;margin-bottom:10px;">✓ Connexion réussie !</p>
+                        <button onclick="goToDashboard()" style="width:100%;padding:1.1rem;background:#16a34a;color:white;font-weight:900;border-radius:1rem;font-size:1rem;text-transform:uppercase;border:none;cursor:pointer;touch-action:manipulation;">
+                            → Accéder à mon espace client
+                        </button>
+                    </div>`;
+                document.getElementById('form-login').appendChild(successDiv);
             }
         }
 
